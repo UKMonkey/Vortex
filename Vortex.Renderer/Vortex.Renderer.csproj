@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5ABF0CB4-C6B9-42E5-98A8-69CFCBFC85E2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Vortex.Renderer</RootNamespace>
+    <AssemblyName>Vortex.Renderer</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Blood\BloodParticle.cs" />
+    <Compile Include="Blood\BloodRenderer.cs" />
+    <Compile Include="BulletTracer\BulletRenderer.cs" />
+    <Compile Include="Camera\AnyCamera.cs" />
+    <Compile Include="Camera\BasicCamera.cs" />
+    <Compile Include="Camera\FuncCamera.cs" />
+    <Compile Include="Camera\DemoCamera.cs" />
+    <Compile Include="Camera\EntityFollowCamera.cs" />
+    <Compile Include="Camera\ManualCamera.cs" />
+    <Compile Include="EntityNameplateRenderer.cs" />
+    <Compile Include="MatrixHelper.cs" />
+    <Compile Include="MeasurementType.cs" />
+    <Compile Include="RenderedRay.cs" />
+    <Compile Include="ViewPerformanceMeasurements.cs" />
+    <Compile Include="Weather\RainDroplet.cs" />
+    <Compile Include="Weather\Splash.cs" />
+    <Compile Include="WorldRenderers\BaseWorldRenderer.cs" />
+    <Compile Include="WorldRenderers\ShadowedRenderer\MaterialVertexBatch.cs" />
+    <Compile Include="WorldRenderers\ShadowedRenderer\Shadowed.cs" />
+    <Compile Include="WorldRenderers\IWorldRenderer.cs" />
+    <Compile Include="RenderResult.cs" />
+    <Compile Include="MeshCollisionRenderer.cs" />
+    <Compile Include="PerformanceHud\BarChartRenderer.cs" />
+    <Compile Include="PerformanceHud\TimeLineRenderer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ConsoleRenderer.cs" />
+    <Compile Include="RayTraceRenderer.cs" />
+    <Compile Include="Shapes\Plane.cs" />
+    <Compile Include="Shapes\ShapeRenderer.cs" />
+    <Compile Include="Shapes\ShapeVertex.cs" />
+    <Compile Include="Shapes\VerticesBuilder.cs" />
+    <Compile Include="SplashScreen.cs" />
+    <Compile Include="View.cs" />
+    <Compile Include="Weather\RainRenderer.cs" />
+    <Compile Include="Weather\LightningRenderer.cs" />
+    <Compile Include="WorldRenderers\ShadowedRenderer\TriangleKey.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Externals\SlimMath\SlimMath.csproj">
+      <Project>{820fe441-822f-4519-994b-04f1de27ff15}</Project>
+      <Name>SlimMath</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vortex\Vortex.csproj">
+      <Project>{D5456FE6-816A-4C47-AD19-0244F1CB56DE}</Project>
+      <Name>Vortex</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Psy.Core\Psy.Core.csproj">
+      <Project>{F6C48801-4391-4606-BB2A-1C38FABA8A30}</Project>
+      <Name>Psy.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Psy.Graphics\Psy.Graphics.csproj">
+      <Project>{C0220DAC-1CAA-4A47-93E4-106C850D4232}</Project>
+      <Name>Psy.Graphics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Psy.Windows\Psy.Windows.csproj">
+      <Project>{E96D155C-F3EB-4152-A9F1-9D7A047100C9}</Project>
+      <Name>Psy.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vortex.Interface\Vortex.Interface.csproj">
+      <Project>{6C96625B-4421-40B8-BB3D-9071FAFE1F33}</Project>
+      <Name>Vortex.Interface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

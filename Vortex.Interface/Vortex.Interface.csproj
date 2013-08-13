@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6C96625B-4421-40B8-BB3D-9071FAFE1F33}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Vortex.Interface</RootNamespace>
+    <AssemblyName>Vortex.Interface</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnimationStatus.cs" />
+    <Compile Include="Audio\IAudioEngine.cs" />
+    <Compile Include="Audio\IAudioChannel.cs" />
+    <Compile Include="Audio\IAudioLookup.cs" />
+    <Compile Include="Audio\IAudioSample.cs" />
+    <Compile Include="Debugging\DebugTimer.cs" />
+    <Compile Include="EntityBase\Damage\IEntityDamageHandler.cs" />
+    <Compile Include="EntityBase\EntityModel.cs" />
+    <Compile Include="IConsoleCommandContext.cs" />
+    <Compile Include="Net\RejectionReasonEnum.cs" />
+    <Compile Include="Serialisation\StreamExtensions.cs" />
+    <Compile Include="StartArguments.cs" />
+    <Compile Include="DamageTypeEnum.cs" />
+    <Compile Include="Debugging\TimingStats.cs" />
+    <Compile Include="EngineException.cs" />
+    <Compile Include="EntityBase\Behaviours\EntityBehaviourEnum.cs" />
+    <Compile Include="EntityBase\Behaviours\EntityBehaviourExtensions.cs" />
+    <Compile Include="EntityBase\Behaviours\IEntityBehaviour.cs" />
+    <Compile Include="EntityBase\EntityFactoryExtensions.cs" />
+    <Compile Include="EntityBase\IEntityFactory.cs" />
+    <Compile Include="EntityBase\Properties\EntityProperty.cs" />
+    <Compile Include="IClientConfiguration.cs" />
+    <Compile Include="IConfiguration.cs" />
+    <Compile Include="IServerConfiguration.cs" />
+    <Compile Include="RemotePlayerCache.cs" />
+    <Compile Include="Traits\Trait.cs" />
+    <Compile Include="EntityBase\Properties\EntityPropertyEnum.cs" />
+    <Compile Include="EntityBase\Properties\EntityPropertyExtensions.cs" />
+    <Compile Include="EntityType.cs" />
+    <Compile Include="IClient.cs" />
+    <Compile Include="IGameClient.cs" />
+    <Compile Include="IGameServer.cs" />
+    <Compile Include="IMapGeometry.cs" />
+    <Compile Include="IServer.cs" />
+    <Compile Include="Net\DeliveryMethod.cs" />
+    <Compile Include="Net\IIncomingMessageStream.cs" />
+    <Compile Include="Net\IOutgoingMessageStream.cs" />
+    <Compile Include="Net\Message.cs" />
+    <Compile Include="EntityBase\Entity.cs" />
+    <Compile Include="IEngine.cs" />
+    <Compile Include="IGame.cs" />
+    <Compile Include="Net\NetworkStatus.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Net\RemotePlayer.cs" />
+    <Compile Include="World\ChunkMesh.cs" />
+    <Compile Include="World\ChunkMeshTriangle.cs" />
+    <Compile Include="World\Chunks\Chunk.cs" />
+    <Compile Include="World\Chunks\ChunkKey.cs" />
+    <Compile Include="World\Chunks\IChunkCache.cs" />
+    <Compile Include="World\Chunks\IChunkLoader.cs" />
+    <Compile Include="World\Chunks\IChunkSaver.cs" />
+    <Compile Include="World\Entities\IEntityCache.cs" />
+    <Compile Include="World\Entities\IEntityLoader.cs" />
+    <Compile Include="World\Entities\IEntitySaver.cs" />
+    <Compile Include="World\ILight.cs" />
+    <Compile Include="World\ITimeOfDayProvider.cs" />
+    <Compile Include="World\Triggers\TriggerActivationMethod.cs" />
+    <Compile Include="World\Wrapper\IWorldProvider.cs" />
+    <Compile Include="World\Wrapper\IWorldSaver.cs" />
+    <Compile Include="World\Light.cs" />
+    <Compile Include="World\Triggers\ITrigger.cs" />
+    <Compile Include="World\Triggers\ITriggerCache.cs" />
+    <Compile Include="World\Triggers\ITriggerFactory.cs" />
+    <Compile Include="World\Triggers\ITriggerLoader.cs" />
+    <Compile Include="World\Triggers\ITriggerSaver.cs" />
+    <Compile Include="World\Triggers\StaticTriggerFactory.cs" />
+    <Compile Include="World\Triggers\TriggerFactory.cs" />
+    <Compile Include="World\Triggers\TriggerKey.cs" />
+    <Compile Include="World\Triggers\TriggerTypeAttribute.cs" />
+    <Compile Include="World\Wrapper\SimpleWorldProviderWrapper.cs" />
+    <Compile Include="World\Wrapper\WorldProviderWrapper.cs" />
+    <Compile Include="World\Wrapper\WorldSaverWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Externals\Lidgren.Network\Lidgren.Network.csproj">
+      <Project>{AE483C29-042E-4226-BA52-D247CE7676DA}</Project>
+      <Name>Lidgren.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Externals\SlimMath\SlimMath.csproj">
+      <Project>{820FE441-822F-4519-994B-04F1DE27FF15}</Project>
+      <Name>SlimMath</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Psy.Core\Psy.Core.csproj">
+      <Project>{F6C48801-4391-4606-BB2A-1C38FABA8A30}</Project>
+      <Name>Psy.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Psy.Graphics\Psy.Graphics.csproj">
+      <Project>{c0220dac-1caa-4a47-93e4-106c850d4232}</Project>
+      <Name>Psy.Graphics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Psy.Gui\Psy.Gui.csproj">
+      <Project>{8AD04E63-795A-4A36-B9CA-EAB859B74166}</Project>
+      <Name>Psy.Gui</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

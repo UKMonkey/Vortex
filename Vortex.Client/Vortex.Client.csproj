@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5C3246CD-1854-40A5-BCF5-E026805A8C04}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Vortex.Client</RootNamespace>
+    <AssemblyName>Vortex.Client</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <MSBuildCommunityTasksPath>$(SolutionDir)\Build</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Builds\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Builds\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>outbreak.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\opentk_unoffical.1.1.788.3121\lib\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Audio\AudioEngineFactory.cs" />
+    <Compile Include="Audio\Null\NullAudioChannel.cs" />
+    <Compile Include="Audio\Null\NullAudioSample.cs" />
+    <Compile Include="Audio\OpenAL\AudioVectorExtensions.cs" />
+    <Compile Include="Audio\OpenAL\OpenALAudioChannel.cs" />
+    <Compile Include="Audio\OpenAL\OpenALAudioEngine.cs" />
+    <Compile Include="Audio\Null\NullAudioEngine.cs" />
+    <Compile Include="Audio\OpenAL\OpenALAudioSample.cs" />
+    <Compile Include="Audio\OpenAL\OpenALLoadedSample.cs" />
+    <Compile Include="Audio\OpenAL\OpenALOggLoader.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="Configuration\ClientConfigurationFactory.cs" />
+    <Compile Include="Configuration\ClientConfiguration.cs" />
+    <Compile Include="Configuration\PlayerConfigurationFactory.cs" />
+    <Compile Include="Console\Commands.cs" />
+    <Compile Include="Console\Commands.Debug.cs" />
+    <Compile Include="EngineWindow.cs" />
+    <Compile Include="MessageHandler.cs" />
+    <Compile Include="NetworkPerformance.cs" />
+    <Compile Include="Renderer\FrameNumberRenderer.cs" />
+    <Compile Include="Renderer\LatencyRenderer.cs" />
+    <Compile Include="Renderer\PerformanceChartRenderer.cs" />
+    <Compile Include="Renderer\PositionRenderer.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="World\Providers\NetworkChunkLoader.cs" />
+    <Compile Include="World\Providers\NetworkEntityLoader.cs" />
+    <Compile Include="World\Providers\NetworkTriggerLoader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="client.cfg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="keybinds.cfg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="client-icon.ico" />
+    <Content Include="outbreak.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Externals\SlimMath\SlimMath.csproj">
+      <Project>{820fe441-822f-4519-994b-04f1de27ff15}</Project>
+      <Name>SlimMath</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vortex.Renderer\Vortex.Renderer.csproj">
+      <Project>{5ABF0CB4-C6B9-42E5-98A8-69CFCBFC85E2}</Project>
+      <Name>Vortex.Renderer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vortex\Vortex.csproj">
+      <Project>{D5456FE6-816A-4C47-AD19-0244F1CB56DE}</Project>
+      <Name>Vortex</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Externals\Lidgren.Network\Lidgren.Network.csproj">
+      <Project>{AE483C29-042E-4226-BA52-D247CE7676DA}</Project>
+      <Name>Lidgren.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Externals\OggDecoder\OggVorbisDecoder\OggVorbisDecoder.csproj">
+      <Project>{1086B3A5-D9CB-464A-B8F1-1E262468D77B}</Project>
+      <Name>OggVorbisDecoder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Psy.Core\Psy.Core.csproj">
+      <Project>{F6C48801-4391-4606-BB2A-1C38FABA8A30}</Project>
+      <Name>Psy.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Psy.Graphics\Psy.Graphics.csproj">
+      <Project>{C0220DAC-1CAA-4A47-93E4-106C850D4232}</Project>
+      <Name>Psy.Graphics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Psy.Gui.Renderer\Psy.Gui.Renderer.csproj">
+      <Project>{B977B767-FACE-494B-B7E7-F473F506D4AE}</Project>
+      <Name>Psy.Gui.Renderer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Psy.Gui\Psy.Gui.csproj">
+      <Project>{8AD04E63-795A-4A36-B9CA-EAB859B74166}</Project>
+      <Name>Psy.Gui</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Psy.Windows\Psy.Windows.csproj">
+      <Project>{E96D155C-F3EB-4152-A9F1-9D7A047100C9}</Project>
+      <Name>Psy.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vortex.Interface\Vortex.Interface.csproj">
+      <Project>{6C96625B-4421-40B8-BB3D-9071FAFE1F33}</Project>
+      <Name>Vortex.Interface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
