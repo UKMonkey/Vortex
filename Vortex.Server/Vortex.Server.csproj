@@ -13,6 +13,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -25,7 +26,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -34,7 +34,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Builds\Debug\</OutputPath>
+    <OutputPath>..\..\Builds\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -43,13 +43,16 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Builds\Release\</OutputPath>
+    <OutputPath>..\..\Builds\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>outbreak.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -81,11 +84,15 @@
     <Content Include="server-icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Externals\SlimMath\SlimMath.csproj">
+    <ProjectReference Include="..\..\Externals\Lidgren.Network\Lidgren.Network.csproj">
+      <Project>{49BA1C69-6104-41AC-A5D8-B54FA9F696E8}</Project>
+      <Name>Lidgren.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Externals\SlimMath\SlimMath.csproj">
       <Project>{820FE441-822F-4519-994B-04F1DE27FF15}</Project>
       <Name>SlimMath</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Psy.Graphics\Psy.Graphics.csproj">
+    <ProjectReference Include="..\..\Psy\Psy.Graphics\Psy.Graphics.csproj">
       <Project>{c0220dac-1caa-4a47-93e4-106c850d4232}</Project>
       <Name>Psy.Graphics</Name>
     </ProjectReference>
@@ -93,11 +100,7 @@
       <Project>{D5456FE6-816A-4C47-AD19-0244F1CB56DE}</Project>
       <Name>Vortex</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Externals\Lidgren.Network\Lidgren.Network.csproj">
-      <Project>{AE483C29-042E-4226-BA52-D247CE7676DA}</Project>
-      <Name>Lidgren.Network</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Psy.Core\Psy.Core.csproj">
+    <ProjectReference Include="..\..\Psy\Psy.Core\Psy.Core.csproj">
       <Project>{F6C48801-4391-4606-BB2A-1C38FABA8A30}</Project>
       <Name>Psy.Core</Name>
     </ProjectReference>

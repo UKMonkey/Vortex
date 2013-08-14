@@ -85,7 +85,7 @@
     <Compile Include="WorldRenderers\ShadowedRenderer\TriangleKey.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Externals\SlimMath\SlimMath.csproj">
+    <ProjectReference Include="..\..\Externals\SlimMath\SlimMath.csproj">
       <Project>{820fe441-822f-4519-994b-04f1de27ff15}</Project>
       <Name>SlimMath</Name>
     </ProjectReference>
@@ -93,15 +93,15 @@
       <Project>{D5456FE6-816A-4C47-AD19-0244F1CB56DE}</Project>
       <Name>Vortex</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Psy.Core\Psy.Core.csproj">
+    <ProjectReference Include="..\..\Psy\Psy.Core\Psy.Core.csproj">
       <Project>{F6C48801-4391-4606-BB2A-1C38FABA8A30}</Project>
       <Name>Psy.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Psy.Graphics\Psy.Graphics.csproj">
+    <ProjectReference Include="..\..\Psy\Psy.Graphics\Psy.Graphics.csproj">
       <Project>{C0220DAC-1CAA-4A47-93E4-106C850D4232}</Project>
       <Name>Psy.Graphics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Psy.Windows\Psy.Windows.csproj">
+    <ProjectReference Include="..\..\Psy\Psy.Windows\Psy.Windows.csproj">
       <Project>{E96D155C-F3EB-4152-A9F1-9D7A047100C9}</Project>
       <Name>Psy.Windows</Name>
     </ProjectReference>
