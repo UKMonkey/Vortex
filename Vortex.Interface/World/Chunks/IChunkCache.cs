@@ -22,12 +22,6 @@ namespace Vortex.Interface.World.Chunks
         List<Chunk> GetChunks(IEnumerable<ChunkKey> keys);
 
         /// <summary>
-        /// Notify the cache that chunks that have already been generated have changed.
-        /// </summary>
-        /// <param name="changedChunk"></param>
-        void UpdateChunks(List<Chunk> changedChunk);
-
-        /// <summary>
         /// Once complete, any stored chunks waiting to be pushed to "OnChunksUpdated" or "OnChunksLoaded" will be guarenteed to have been done.
         /// </summary>
         void ProcessLoadedData();

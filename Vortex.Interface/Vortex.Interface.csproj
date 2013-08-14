@@ -100,6 +100,7 @@
     <Compile Include="Net\NetworkStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Net\RemotePlayer.cs" />
+    <Compile Include="World\ChunkBlocks.cs" />
     <Compile Include="World\ChunkMesh.cs" />
     <Compile Include="World\ChunkMeshTriangle.cs" />
     <Compile Include="World\Chunks\Chunk.cs" />

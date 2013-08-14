@@ -5,8 +5,12 @@ using SlimMath;
 
 namespace Vortex.Interface.World
 {
+    public delegate void ChunkMeshCallback(ChunkMesh item);
+
     public class ChunkMesh
     {
+        public event ChunkMeshCallback ChunkMeshUpdated;
+
         public readonly List<ChunkMeshTriangle> Triangles;
         public readonly List<Vector3> Vertices;
         public Vector3 WorldVector;

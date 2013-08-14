@@ -154,7 +154,7 @@ namespace Vortex.World
 
         /** Notify the chunk chunkLoader to save chunks
          *  Register everything changed and we'll deal with it later
-         */
+         *
         public void UpdateChunks(List<Chunk> changedChunks)
         {
             if (changedChunks.Count == 0)
@@ -168,7 +168,7 @@ namespace Vortex.World
             }
             _saver.SaveChunks(changedChunks);
         }
-
+        */
         private void ChunksGenerated(List<Chunk> chunks)
         {
             foreach (var changedChunk in chunks)
