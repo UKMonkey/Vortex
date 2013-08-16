@@ -72,7 +72,9 @@
     <Compile Include="Net\DeliveryMethodMapper.cs" />
     <Compile Include="Net\IncomingMessageStream.cs" />
     <Compile Include="Net\MessageIdFactory.cs" />
+    <Compile Include="Net\Messages\ClientGetBlockTypesMessage.cs" />
     <Compile Include="Net\Messages\ClientHandshakeMessage.cs" />
+    <Compile Include="Net\Messages\ServerBlockPropertyMessage.cs" />
     <Compile Include="Net\Messages\ServerCurrentFrameMessage.cs" />
     <Compile Include="Net\Messages\ServerEntityPositionMessage.cs" />
     <Compile Include="Net\Messages\ServerEntityPropertyUpdate.cs" />

@@ -18,6 +18,8 @@ using Vortex.World;
 using Vortex.World.Chunks;
 using Vortex.World.Interfaces;
 using Vortex.World.Movement;
+using Vortex.Interface.World.Blocks;
+using Vortex.Server.World.Blocks;
 
 namespace Vortex.Server
 {
@@ -242,6 +244,11 @@ namespace Vortex.Server
                 this, method.WorldProvider, method.WorldSaver, GetObservedChunkKeys);
 
             return serverWorldDataCache;
+        }
+
+        protected override IBlockTypeCache GetBlockTypeCache()
+        {
+            return new BlockTypeCache(this, Game.GetBlockTypes());
         }
 
         protected override IMovementHandler GetMovementHandler()

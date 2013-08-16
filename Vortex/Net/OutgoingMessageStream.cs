@@ -77,6 +77,15 @@ namespace Vortex.Net
             _netOutgoingMessage.Write(value, 0, size);
         }
 
+        private void Write(short[] shorts)
+        {
+            WriteInt16((short)shorts.Length);
+            foreach (var s in shorts)
+            {
+                WriteInt16(s);
+            }
+        }
+
         public void WriteInt16(short value)
         {
             _netOutgoingMessage.Write(value);
@@ -228,6 +237,22 @@ namespace Vortex.Net
             }
         }
 
+        protected bool Write(ChunkBlocks blocks)
+        {
+            var blocksWritten = (blocks == null);
+            WriteBool(blocksWritten);
+
+            if (!blocksWritten)
+            {
+                return blocksWritten;
+            }
+
+            WriteBool(blocksWritten);
+            var data = blocks.GetBlockData();
+            Write(data);
+            return blocksWritten;
+        }
+
         public void Write(List<Chunk> chunks)
         {
             WriteByte((byte)chunks.Count);
@@ -240,7 +265,8 @@ namespace Vortex.Net
         public void Write(Chunk chunk)
         {
             Write(chunk.Key);
-            Write(chunk.ChunkMesh);
+            if (!Write(chunk.ChunkBlocks))
+                Write(chunk.ChunkMesh);
             Write(chunk.Lights);
         }
 
@@ -269,6 +295,11 @@ namespace Vortex.Net
         public void Write<T>(List<T> properties) where T : Trait
         {
             Write(properties, (short) properties.Count);
+        }
+
+        public void Write<T>(TraitCollection<T> properties) where T : Trait
+        {
+            Write(properties.NonDefaultProperties, (short)properties.NonDefaultPropertyCount);
         }
     }
 }

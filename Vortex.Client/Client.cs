@@ -32,6 +32,8 @@ using Vortex.World;
 using Vortex.World.Movement;
 using Timer = Psy.Core.Timer;
 using Vortex.Interface.EntityBase.Properties;
+using Vortex.Interface.World.Blocks;
+using Vortex.Client.World.Blocks;
 
 namespace Vortex.Client
 {
@@ -634,6 +636,11 @@ namespace Vortex.Client
                                     GetObservedChunkKeys);
 
             return _worldDataCache;
+        }
+
+        protected override IBlockTypeCache GetBlockTypeCache()
+        {
+            return new BlockTypeCache(this, Game.GetDefaultBlock());
         }
 
         protected override IMovementHandler GetMovementHandler()

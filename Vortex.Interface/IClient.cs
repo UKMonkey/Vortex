@@ -5,6 +5,7 @@ using Psy.Gui.Loader;
 using SlimMath;
 using Vortex.Interface.Audio;
 using Vortex.Interface.EntityBase;
+using Vortex.Interface.World.Blocks;
 
 namespace Vortex.Interface
 {

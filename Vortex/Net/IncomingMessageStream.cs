@@ -320,5 +320,17 @@ namespace Vortex.Net
 
             return ret;
         }
+
+        public T2 Read<T1, T2>(IIncomingMessageStream messageStream)
+            where T1 : Trait, new()
+            where T2 : TraitCollection<T1>, new()
+        {
+            var ret = new T2();
+            var traits = ReadTraits<T1>();
+
+            ret.SetProperties(traits);
+
+            return ret;
+        }
     }
 }

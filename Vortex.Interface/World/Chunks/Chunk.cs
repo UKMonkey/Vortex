@@ -17,7 +17,8 @@ namespace Vortex.Interface.World.Chunks
         // Static lights
         public List<ILight> Lights { get; private set; }
         
-        // for block based chunks
+        // for block based chunks - this may or may not be populated
+        // if this is available, it can be used to generate the meshes
         public ChunkBlocks ChunkBlocks { get; private set; }
 
         // for mesh based chunks
@@ -44,11 +45,16 @@ namespace Vortex.Interface.World.Chunks
             Key = key;
             ChunkBlocks = blocks;
             Lights = lights.ToList();
-            ChunkMesh = null;
+            ChunkMesh = GenerateChunkMesh();
 
             ChunkBlocks.BlocksUpdated += BlocksUpdated;
+            ChunkMesh.ChunkMeshUpdated += MeshUpdated;
         }
 
+        private ChunkMesh GenerateChunkMesh()
+        {
+            return new ChunkMesh();
+        }
 
         private void BlocksUpdated(ChunkBlocks blocks, int x, int y)
         {
@@ -56,9 +62,12 @@ namespace Vortex.Interface.World.Chunks
                 return;
 
             ChunkBlockUpdated(this, x, y);
+            ChunkMesh = GenerateChunkMesh();
         }
 
-
+        // TODO
+        // we never really handle this well, might want to look into it
+        // as the observable area might need to be updated?
         private void MeshUpdated(ChunkMesh mesh)
         {
             if (ChunkMeshUpdated == null)

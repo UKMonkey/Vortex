@@ -45,5 +45,6 @@ namespace Vortex.Interface.Net
         void Write(List<Entity> entities);
         void Write(List<ChunkKey> chunkKeys);
         void Write<T>(List<T> properties) where T : Trait;
+        void Write<T>(TraitCollection<T> properties) where T : Trait;
     }
 }

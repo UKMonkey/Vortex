@@ -22,6 +22,12 @@ namespace Vortex.Interface.World
             WorldVector = new Vector3();
         }
 
+        private void MeshUpdated()
+        {
+            if (ChunkMeshUpdated != null)
+                ChunkMeshUpdated(this);
+        }
+
         public ChunkMeshTriangle AddTriangle(int material, Vector3 p0, Vector3 p1, Vector3 p2)
         {
             Vertices.Add(p0);
@@ -30,6 +36,8 @@ namespace Vortex.Interface.World
 
             var triangle = new ChunkMeshTriangle(material, Vertices.Count - 3, Vertices.Count - 2, Vertices.Count - 1, this);
             Triangles.Add(triangle);
+
+            MeshUpdated();
             return triangle;
         }
 
@@ -46,6 +54,8 @@ namespace Vortex.Interface.World
                                  new Vector3(topRight.X, bottomLeft.Y, topRight.Z),
                                  new Vector3(bottomLeft.X, topRight.Y, topRight.Z),
                                  topRight);
+
+            MeshUpdated();
             return ret;
         }
 
@@ -57,6 +67,17 @@ namespace Vortex.Interface.World
             }
 
             Compress();
+            MeshUpdated();
+        }
+
+        public void ReplaceContents(ChunkMesh otherMesh)
+        {
+            Triangles.Clear();
+            Triangles.AddRange(otherMesh.Triangles);
+
+            Vertices.Clear();
+            Vertices.AddRange(otherMesh.Vertices);
+            MeshUpdated();
         }
 
         public void Translate(Vector3 amount)

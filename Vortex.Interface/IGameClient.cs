@@ -2,6 +2,7 @@ using Psy.Core.Input;
 using SlimMath;
 using Vortex.Interface.EntityBase;
 using Vortex.Interface.Net;
+using Vortex.Interface.World.Blocks;
 
 namespace Vortex.Interface
 {
@@ -54,5 +55,11 @@ namespace Vortex.Interface
         /// Get the current player name.
         /// </summary>
         string PlayerName { get; }
+
+        /// <summary>
+        /// default block that should be used when we don't have the data for the blocks yet
+        /// </summary>
+        /// <returns></returns>
+        BlockProperties GetDefaultBlock();
     }
 }

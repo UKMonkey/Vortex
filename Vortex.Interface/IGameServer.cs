@@ -1,6 +1,8 @@
 using Vortex.Interface.EntityBase;
 using Vortex.Interface.Net;
 using Vortex.Interface.World.Wrapper;
+using System.Collections.Generic;
+using Vortex.Interface.World.Blocks;
 
 namespace Vortex.Interface
 {
@@ -39,5 +41,10 @@ namespace Vortex.Interface
         /// </summary>
         /// <param name="player"></param>
         Entity SpawnPlayer(RemotePlayer player);
+
+        /// <summary>
+        /// returns the different types of blocks that will exist in the world
+        /// </summary
+        IEnumerable<BlockProperties> GetBlockTypes();
     }
 }

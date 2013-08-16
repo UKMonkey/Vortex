@@ -44,5 +44,9 @@ namespace Vortex.Interface.Net
         List<ChunkKey> ReadChunkKeys();
         T ReadTrait<T>() where T : Trait, new();
         List<T> ReadEntityProperties<T>() where T : Trait, new();
+
+        T2 Read<T1, T2>(IIncomingMessageStream messageStream) 
+            where T1 : Trait, new()
+            where T2: TraitCollection<T1>, new();
     }
 }

@@ -25,6 +25,7 @@ using Vortex.Net;
 using Vortex.Net.Messages;
 using Vortex.World;
 using Vortex.World.Movement;
+using Vortex.Interface.World.Blocks;
 
 namespace Vortex
 {
@@ -53,6 +54,9 @@ namespace Vortex
 
         public IEnumerable<RemotePlayer> ConnectedClients{get { return RemotePlayers.GetPlayers(); }}
         public virtual IConsole Console { get { return null; } }
+
+        private IBlockTypeCache _blockTypeCache;
+        public virtual IBlockTypeCache BlockTypeCache { get { return _blockTypeCache; } }
 
         protected EngineBase(StartArguments args)
         {
@@ -93,6 +97,7 @@ namespace Vortex
 
             MsgIdFactory = new MessageIdFactory();
             StaticTriggerFactory.Instance = new TriggerFactory(this);
+            _blockTypeCache = GetBlockTypeCache();
         }
 
         /***********************************************/
@@ -408,6 +413,7 @@ namespace Vortex
         public CompiledModelCache CompiledModelCache { get; set; }
 
         protected abstract WorldDataCache GetCachingStrategy();
+        protected abstract IBlockTypeCache GetBlockTypeCache();
 
         public Vector3 ChunkVectorToWorldVector(ChunkKey chunkKey, Vector3 vector)
         {

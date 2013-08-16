@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Psy.Core;
 using Psy.Core.Collision;
 using Psy.Core.EpicModel;
@@ -21,86 +20,9 @@ namespace Vortex.Interface.EntityBase
     public delegate void EntityHandler(IEnumerable<Entity> entities);
 
     [DebuggerDisplay("Id:{EntityId} TypeId:{EntityTypeId} TypeName:{EntityTypeName}")]
-    public class Entity
+    public class Entity : TraitCollection<EntityProperty>
     {
 #region Properties
-        private readonly Dictionary<int, EntityProperty> _nonDefaultProperties;
-        private readonly Dictionary<int, EntityProperty> _defaultProperties;
-         
-        public IEnumerable<EntityProperty> Properties { get { return _nonDefaultProperties.Values.Concat(_defaultProperties.Values); } }
-        public int PropertyCount { get { return _nonDefaultProperties.Count + _defaultProperties.Count; } }
-
-        public IEnumerable<EntityProperty> NonDefaultProperties { get { return _nonDefaultProperties.Values; } }
-        public int NonDefaultPropertyCount { get { return _nonDefaultProperties.Count; } }
-
-        public EntityProperty GetProperty(int property)
-        {
-            if (_nonDefaultProperties.ContainsKey(property))
-                return _nonDefaultProperties[property];
-            if (_defaultProperties.ContainsKey(property))
-                return _defaultProperties[property];
-            throw new Exception("Entity property accessed when not available");
-        }
-
-        public void SetDefaultProperty(EntityProperty property)
-        {
-            _defaultProperties[property.PropertyId] = property;
-            property.OnTraitChanged += DefaultPropertyChanged;
-            UpdateCachedProperties(property);
-        }
-
-        public void SetProperties(IEnumerable<EntityProperty> properties)
-        {
-            foreach (var prop in properties)
-                SetProperty(prop);
-        }
-
-        public void SetProperty(EntityProperty property)
-        {
-            var propertyKey = property.PropertyId;
-
-            if (_nonDefaultProperties.ContainsKey(propertyKey))
-            {
-                var entityProperty = _nonDefaultProperties[propertyKey];
-                entityProperty.Value = property.Value;
-            }
-            else if (_defaultProperties.ContainsKey(propertyKey))
-            {
-                var baseProperty = _defaultProperties[propertyKey];
-                _defaultProperties.Remove(propertyKey);
-
-                _nonDefaultProperties.Add(propertyKey, baseProperty);
-                baseProperty.Value = property.Value;
-            }
-            else
-            {
-                _nonDefaultProperties[propertyKey] = property;
-                property.OnTraitChanged += PropertyChanged;
-                PropertyChanged(property);
-            }                
-        }
-
-        private void DefaultPropertyChanged(Trait changed)
-        {
-            _defaultProperties.Remove(changed.PropertyId);
-            _nonDefaultProperties[changed.PropertyId] = (EntityProperty)changed;
-            
-            changed.OnTraitChanged -= DefaultPropertyChanged;
-            changed.OnTraitChanged += PropertyChanged;
-
-            PropertyChanged(changed);
-        }
-
-        public void ClearProperty(int property)
-        {
-            _nonDefaultProperties.Remove(property);
-            _defaultProperties.Remove(property);
-        }
-
-        public bool HasProperty(int propertyKey)
-        {
-            return _nonDefaultProperties.ContainsKey(propertyKey) || _defaultProperties.ContainsKey(propertyKey);
-        }
 
         private void UpdateCachedProperties(Trait property)
         {
@@ -122,14 +44,6 @@ namespace Vortex.Interface.EntityBase
                     SetModel(property.StringValue, propagate:false);
                     break;
             }
-        }
-
-        private void PropertyChanged(Trait property)
-        {
-            UpdateCachedProperties(property);
-
-            if (OnPropertyChanged != null)
-                OnPropertyChanged(this, property);
         }
 
 #endregion
@@ -254,8 +168,6 @@ namespace Vortex.Interface.EntityBase
             EntityTypeName = entityTypeName;
             EntityId = 0;
 
-            _nonDefaultProperties = new Dictionary<int, EntityProperty>();
-            _defaultProperties = new Dictionary<int, EntityProperty>();
             _behaviours = new Dictionary<short, IEnumerable<IEntityBehaviour>>();
             _damageHandlers = new Dictionary<DamageTypeEnum, IEntityDamageHandler>();
 
@@ -293,14 +205,6 @@ namespace Vortex.Interface.EntityBase
             SetDefaultProperty(new EntityProperty((int)EntityPropertyEnum.Nameplate, ""));
             SetDefaultProperty(new EntityProperty((int)EntityPropertyEnum.NameplateColour, Colours.White));
             SetDefaultProperty(new EntityProperty((int)EntityPropertyEnum.TypeName, EntityTypeName));
-        }
-
-        public bool IsDirty()
-        {
-            foreach (var property in _nonDefaultProperties)
-                if (property.Value.IsDirty)
-                    return true;
-            return false;
         }
 
 #region Destruction

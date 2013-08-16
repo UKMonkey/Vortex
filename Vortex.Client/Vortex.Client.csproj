@@ -78,6 +78,7 @@
     <Compile Include="Renderer\PositionRenderer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="World\Blocks\BlockTypeCache.cs" />
     <Compile Include="World\Providers\NetworkChunkLoader.cs" />
     <Compile Include="World\Providers\NetworkEntityLoader.cs" />
     <Compile Include="World\Providers\NetworkTriggerLoader.cs" />

@@ -23,6 +23,10 @@ namespace Vortex.Interface
         /// <param name="playerName"></param>
         Entity GetEntity(string playerName);
 
+        /// <summary>
+        /// Tells the server what port it should listen to
+        /// </summary>
+        /// <param name="port"></param>
         void Listen(int port);
 
         /// <summary>

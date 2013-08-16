@@ -11,6 +11,7 @@ using Vortex.Interface.Net;
 using Vortex.Interface.World;
 using Vortex.Interface.World.Chunks;
 using Vortex.Interface.World.Entities;
+using Vortex.Interface.World.Blocks;
 
 namespace Vortex.Interface
 {
@@ -23,6 +24,7 @@ namespace Vortex.Interface
         int SynchronizeFrequency { get; }
         ITimeOfDayProvider TimeOfDayProvider { get; }
         uint CurrentFrameNumber { get; }
+        IBlockTypeCache BlockTypeCache { get; }
 
         IEnumerable<Entity> Entities { get; }
         IEntityFactory EntityFactory { get; }
@@ -112,7 +114,7 @@ namespace Vortex.Interface
 
 
         /**************/
-        /// Entities
+        /// Entities  (how much of this should be moved to IEngine?)
         /**************/
 
 
