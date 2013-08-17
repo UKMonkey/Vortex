@@ -25,5 +25,10 @@ namespace Vortex.World.Chunks
             var y = (int) Math.Floor((point.Y - Chunk.ChunkWorldSize)/(double) Chunk.ChunkWorldSize) + 1;
             return new ChunkKey(x, y);
         }
+
+        public static Vector3 GetCentreOfChunk(ChunkKey key)
+        {
+            return GetChunkWorldVectorWithOffset(key, new Vector3(Chunk.ChunkWorldSize/2, Chunk.ChunkWorldSize/2, 0));
+        }
     }
 }
