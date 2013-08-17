@@ -122,16 +122,6 @@ namespace Vortex.World.Observable
         /// <returns></returns>
         bool IsBlocked(Vector3 position);
 
-        /// <summary>
-        /// Size of the observable area
-        /// </summary>
-        float ObservedSize     { get; }
-
-        /// <summary>
-        /// Half of the above (might save some divisions)
-        /// </summary>
-        float HalfObservedSize { get; }
-
         Vector2 Middle { get; }
 
         void ForceUpdate();
