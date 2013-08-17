@@ -152,23 +152,6 @@ namespace Vortex.World
             return available;
         }
 
-        /** Notify the chunk chunkLoader to save chunks
-         *  Register everything changed and we'll deal with it later
-         *
-        public void UpdateChunks(List<Chunk> changedChunks)
-        {
-            if (changedChunks.Count == 0)
-            {
-                return;
-            }
-
-            lock (_chunkCache)
-            {
-                _updatedChunks.InsertRange(_updatedChunks.Count, changedChunks);
-            }
-            _saver.SaveChunks(changedChunks);
-        }
-        */
         private void ChunksGenerated(List<Chunk> chunks)
         {
             foreach (var changedChunk in chunks)
@@ -191,11 +174,19 @@ namespace Vortex.World
                 _loadedChunks.AddRange(chunks);
             }
 
-            foreach (var key in chunks.Select(item => item.Key))
+            foreach (var chunk in chunks)
             {
+                var key = chunk.Key;
+
+                chunk.ChunkMeshUpdated += ChunkMeshUpdated;
                 _loader.LoadTriggers(key);
                 _loader.LoadEntities(key);
             }
+        }
+
+        private void ChunkMeshUpdated(Chunk chunk)
+        {
+            _updatedChunks.Add(chunk);
         }
 
         public List<ITrigger> GetTriggers(ChunkKey area)
@@ -673,9 +664,13 @@ namespace Vortex.World
                 bool previouslyExisted;
                 var entityToAdd = UpdateEntityMaps(entity, out previouslyExisted);
                 if (previouslyExisted)
+                {
                     updated.Add(entityToAdd);
+                }
                 else
+                {
                     created.Add(entityToAdd);
+                }
             }
 
             _entityQuadTree.UpdateItems(updated.Concat(created));

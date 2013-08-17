@@ -36,6 +36,7 @@ namespace Vortex.Server.World
             _requestedChunks = new Dictionary<RemotePlayer, HashSet<ChunkKey>>();
             _requestedTriggers = new Dictionary<RemotePlayer, HashSet<ChunkKey>>();
 
+            OnChunksLoaded += ListenForChunkUpdates;
             OnChunksLoaded += ProcessForClients;
             OnChunksUpdated += SendChunks;
 
@@ -118,6 +119,33 @@ namespace Vortex.Server.World
             _requestedTriggers[requester].Add(chunkToGet);
         }
 
+        private void ListenForChunkUpdates(List<Chunk> chunks)
+        {
+            foreach (var chunk in chunks)
+            {
+                if (chunk.BlockBased)
+                    chunk.ChunkBlockUpdated += HandleUpdatedChunkBlock;
+                else
+                    chunk.ChunkUpdated += HandleUpdatedChunk;
+            }
+        }
+
+        private void HandleUpdatedChunkBlock(Chunk chunk, short x, short y, short z)
+        {
+            var msg = new ServerChunkBlockUpdatedMessage 
+                { Key = chunk.Key,
+                  X = x, Y = y, Z = z,
+                  Value = chunk.ChunkBlocks.GetBlockType(x, y, z)};
+            var interestedParties = _engine.GetPlayersInterestedInChunk(chunk.Key);
+            _engine.SendMessageToClients(msg, interestedParties);
+        }
+
+        private void HandleUpdatedChunk(Chunk updatedChunk)
+        {
+            // we can't send the update of this chunk is a compressed manner - so just re-send it
+            SendChunks(new List<Chunk>{updatedChunk});
+        }
+
         /** Check what clients have requested anything in the list, and send it to them.
          */
         private void ProcessForClients(List<Chunk> chunks)
@@ -137,7 +165,8 @@ namespace Vortex.Server.World
                 if (entry.Value.Count == 0)
                     continue;
 
-                var toSend = triggers.Where(trigger => entry.Value.Contains(trigger.UniqueKey.ChunkLocation)).ToList();
+                var chunkKeys = entry.Value;
+                var toSend = triggers.Where(trigger => chunkKeys.Contains(trigger.UniqueKey.ChunkLocation)).ToList();
                 SendTriggers(key, toSend);
             }
         }
@@ -150,16 +179,13 @@ namespace Vortex.Server.World
                 return;
 
             Logger.Write(string.Format("Transmitting {0} chunks:", chunks.Count), LoggerLevel.Trace);
-            foreach (var item in chunks)
+            foreach (var chunk in chunks)
             {
-                Logger.Write(item.Key.X + ", " + item.Key.Y + ":", LoggerLevel.Trace);
-            }
+                Logger.Write(chunk.Key.X + ", " + chunk.Key.Y + ":", LoggerLevel.Trace);
 
-            foreach (var item in chunks)
-            {
-                var msg = new ServerChunkUpdatedMessage {Chunk = item};
-
-                _engine.SendMessage(msg);
+                var msg = new ServerChunkUpdatedMessage {Chunk = chunk};
+                var interestedParties = _engine.GetPlayersInterestedInChunk(chunk.Key);
+                _engine.SendMessageToClients(msg, interestedParties);
             }
         }
 
@@ -332,7 +358,7 @@ namespace Vortex.Server.World
                                   FrameNumber = _engine.CurrentFrameNumber
                               };
                 _engine.SendMessage(msg);
-            };
+            }
         }
 
         private void SendDeleteEntities(List<Entity> entities)

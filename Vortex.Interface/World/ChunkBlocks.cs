@@ -1,6 +1,6 @@
 ﻿namespace Vortex.Interface.World
 {
-    public delegate void BlockCallback(ChunkBlocks blocks, int x, int y);
+    public delegate void BlockCallback(ChunkBlocks blocks, short x, short y, short z);
 
     public class ChunkBlocks
     {
@@ -13,11 +13,11 @@
         public ChunkBlocks()
         {
             _blocks = new short[BlockCount * BlockCount * Depth];
-            for (var i = 0; i < BlockCount; ++i)
+            for (short i = 0; i < BlockCount; ++i)
             {
-                for (var j = 0; j < BlockCount; ++j)
+                for (short j = 0; j < BlockCount; ++j)
                 {
-                    for (var k = 0; k < Depth; ++k)
+                    for (short k = 0; k < Depth; ++k)
                     {
                         _blocks[GetBlockIndex(i, j, k)] = -1;
                     }
@@ -25,12 +25,12 @@
             }
         }
 
-        public int GetBlockIndex(int x, int y, int z)
+        public int GetBlockIndex(short x, short y, short z)
         {
             return x + (BlockCount * y) + (BlockCount * BlockCount * z);
         }
 
-        public void SetBlockType(int x, int y, int z, short value)
+        public void SetBlockType(short x, short y, short z, short value)
         {
             var index = GetBlockIndex(x, y, z);
 
@@ -39,10 +39,10 @@
 
             _blocks[index] = value;
             if (BlocksUpdated != null)
-                BlocksUpdated(this, x, y);
+                BlocksUpdated(this, x, y, z);
         }
 
-        public short GetBlockType(int x, int y, int z)
+        public short GetBlockType(short x, short y, short z)
         {
             var index = GetBlockIndex(x, y, z);
             return _blocks[index];
@@ -56,11 +56,11 @@
         // might need to be re-examined
         public void SetBlockData(short[] data)
         {
-            for (var i = 0; i < BlockCount; ++i)
+            for (short i = 0; i < BlockCount; ++i)
             {
-                for (var j = 0; j < BlockCount; ++j)
+                for (short j = 0; j < BlockCount; ++j)
                 {
-                    for (var k = 0; k < Depth; ++k)
+                    for (short k = 0; k < Depth; ++k)
                     {
                         var index = GetBlockIndex(i, j, k);
                         SetBlockType(i, j, k, data[index]);
