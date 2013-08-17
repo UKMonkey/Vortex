@@ -20,6 +20,7 @@ using Vortex.World.Interfaces;
 using Vortex.World.Movement;
 using Vortex.Interface.World.Blocks;
 using Vortex.Server.World.Blocks;
+using Vortex.World.Observable;
 
 namespace Vortex.Server
 {
@@ -168,6 +169,13 @@ namespace Vortex.Server
             SendMessageToClient(msg, destination);
         }
 
+        public void SendMessageToClients(Message message, IEnumerable<RemotePlayer> destinations)
+        {
+            var msg = SerializeMessage(message);
+            var targets = destinations.Select(item => item.Connection).ToList();
+            _netServer.SendMessage(msg, targets, NetDeliveryMethod.ReliableOrdered, 0);
+        }
+
         private void SendMessageToClient(NetOutgoingMessage message, RemotePlayer destination)
         {
             _netServer.SendMessage(message, destination.Connection, NetDeliveryMethod.ReliableOrdered);
@@ -292,7 +300,29 @@ namespace Vortex.Server
             SendMessage(msg);
         }
 
-#endregion
+        public IEnumerable<RemotePlayer> GetPlayersInterestedInChunk(ChunkKey key)
+        {
+            var players = RemotePlayers.GetPlayers();
+            const float maxDisSqrd = (ObservableArea.HalfObservedSize + Chunk.ChunkWorldSize) *
+                                     (ObservableArea.HalfObservedSize + Chunk.ChunkWorldSize);
+            var chunkCenter = Utils.GetCentreOfChunk(key);
+
+            foreach (var player in players)
+            {
+                var entity = GetEntity(player);
+                if (entity == null)
+                    continue;
+
+                var pos = entity.GetPosition();
+                var distanceSqrd = (pos - new Vector3(0,0,pos.Z) - chunkCenter).LengthSquared;
+                if (maxDisSqrd > distanceSqrd)
+                    continue;
+
+                yield return player;
+            }
+        }
+
+        #endregion
 
 #region Console
 

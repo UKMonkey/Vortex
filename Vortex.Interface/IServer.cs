@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using SlimMath;
 using Vortex.Interface.EntityBase;
 using Vortex.Interface.Net;
@@ -37,11 +38,18 @@ namespace Vortex.Interface
         void SendMessage(Message message, RemotePlayer except);
 
         /// <summary>
-        /// Server - send message to a single client.
+        /// Send message to a single client.
         /// </summary>
         /// <param name="message"></param>
         /// <param name="destination"></param>
         void SendMessageToClient(Message message, RemotePlayer destination);
+
+        /// <summary>
+        /// Send a message to a specific group of clients
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="destinations"></param>
+        void SendMessageToClients(Message message, IEnumerable<RemotePlayer> destinations);
 
         /// <summary>
         /// Tell the client which entity it is to follow
@@ -78,5 +86,11 @@ namespace Vortex.Interface
         /// <param name="audioChannel">See AudioChannel enum</param>
         /// <param name="soundFilename">See Sounds static class</param>
         void PlaySoundOnEntity(Entity target, byte audioChannel, string soundFilename);
+
+        /// <summary>
+        /// Establish what players would be interested about something happening in this part of the map
+        /// </summary>
+        /// <param name="key">Key that we should Examine</param>
+        IEnumerable<RemotePlayer> GetPlayersInterestedInChunk(ChunkKey key);
     }
 }
