@@ -61,22 +61,17 @@ namespace Vortex.World.Observable
         private Vector2 _bottomLeftA;
         private Vector2 _bottomLeftB;
 
+        private Vector2 _middleA;
+        private Vector2 _middleB;
+
         private volatile HashSet<ChunkKey> _observedChunksExtendedA;
         private volatile HashSet<ChunkKey> _observedChunksExtendedB;
 
-        private const float _observedSize = ChunkSquareSize*Chunk.ChunkWorldSize;
-        public float ObservedSize { get { return _observedSize; } }
+        public const float ObservedSize = ChunkSquareSize*Chunk.ChunkWorldSize;
+        public const float HalfObservedSize = ObservedSize/2;
 
-        private const float _halfObservedSize = _observedSize / 2;
-        public float HalfObservedSize { get { return _halfObservedSize; } }
+        private readonly static Vector2 MiddleOffset = new Vector2(HalfObservedSize, HalfObservedSize);
 
-        /// <summary>
-        /// Middle in Observable Area coordinates
-        /// </summary>
-        public Vector2 Middle
-        {
-            get { return BottomLeft + new Vector2(_halfObservedSize, _halfObservedSize); }
-        }
 
         /** Double buffered attributes **/
         public List<List<ChunkKey>> ChunksObserved        { get { return _bufferState ? _keysGridA : _keysGridB; } }
@@ -109,8 +104,21 @@ namespace Vortex.World.Observable
             {
                 if (_bufferState) _bottomLeftB = value;
                 else _bottomLeftA = value;
+
+                MiddleBuffer = value + MiddleOffset;
             }
         }
+
+        public Vector2 Middle                             { get { return _bufferState ? _middleA : _middleB; } }
+        public Vector2 MiddleBuffer                       { get { return _bufferState ? _middleB : _middleA; }
+            set
+            {
+                if (_bufferState) _middleB = value;
+                else _middleA = value;
+            }
+        }
+        
+
 
         public event ObservableAreaUpdated Updated;
 

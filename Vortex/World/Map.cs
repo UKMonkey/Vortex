@@ -130,7 +130,7 @@ namespace Vortex.World
             var observableArea = new ObservableArea(_outsideLightingColour, () => camera.Vector, _dataCache, updateMethods);
             _observableAreas.Add(camera, observableArea);
 
-            MaximumObservableAreaSize = Math.Max(MaximumObservableAreaSize, observableArea.ObservedSize);
+            MaximumObservableAreaSize = Math.Max(MaximumObservableAreaSize, ObservableArea.ObservedSize);
 
             return observableArea;
         }
