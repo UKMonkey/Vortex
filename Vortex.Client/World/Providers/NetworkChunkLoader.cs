@@ -57,7 +57,7 @@ namespace Vortex.Client.World.Providers
             Logger.Write(String.Format("Got chunk {0}, {1}", chunk.Key.X, chunk.Key.Y), LoggerLevel.Trace);
 
             if (OnChunkLoad != null)
-                OnChunkLoad(new List<Chunk>{chunk});
+                OnChunkLoad(new List<IChunk>{chunk});
         }
     }
 }

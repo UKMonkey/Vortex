@@ -119,36 +119,23 @@ namespace Vortex.Server.World
             _requestedTriggers[requester].Add(chunkToGet);
         }
 
-        private void ListenForChunkUpdates(List<Chunk> chunks)
+        private void ListenForChunkUpdates(List<IChunk> chunks)
         {
             foreach (var chunk in chunks)
             {
-                if (chunk.BlockBased)
-                    chunk.ChunkBlockUpdated += HandleUpdatedChunkBlock;
-                else
-                    chunk.ChunkUpdated += HandleUpdatedChunk;
+                chunk.ChunkChanged += HandleUpdatedChunk;
             }
         }
 
-        private void HandleUpdatedChunkBlock(Chunk chunk, short x, short y, short z)
-        {
-            var msg = new ServerChunkBlockUpdatedMessage 
-                { Key = chunk.Key,
-                  X = x, Y = y, Z = z,
-                  Value = chunk.ChunkBlocks.GetBlockType(x, y, z)};
-            var interestedParties = _engine.GetPlayersInterestedInChunk(chunk.Key);
-            _engine.SendMessageToClients(msg, interestedParties);
-        }
-
-        private void HandleUpdatedChunk(Chunk updatedChunk)
+        private void HandleUpdatedChunk(IChunk updatedChunk)
         {
             // we can't send the update of this chunk is a compressed manner - so just re-send it
-            SendChunks(new List<Chunk>{updatedChunk});
+            SendChunks(new List<IChunk>{updatedChunk});
         }
 
         /** Check what clients have requested anything in the list, and send it to them.
          */
-        private void ProcessForClients(List<Chunk> chunks)
+        private void ProcessForClients(List<IChunk> chunks)
         {
             lock (_requestedChunks)
             {
@@ -173,7 +160,7 @@ namespace Vortex.Server.World
 
         /** Send a load of chunks to all the clients ...
          */
-        private void SendChunks(List<Chunk> chunks)
+        private void SendChunks(List<IChunk> chunks)
         {
             if (chunks.Count == 0)
                 return;
@@ -191,7 +178,7 @@ namespace Vortex.Server.World
 
         /** Send a load of chunks to one specific client
          */
-        private void SendChunks(RemotePlayer target, List<Chunk> chunks)
+        private void SendChunks(RemotePlayer target, List<IChunk> chunks)
         {
             if (chunks.Count == 0)
                 return;

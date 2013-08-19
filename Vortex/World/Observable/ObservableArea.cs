@@ -349,7 +349,7 @@ namespace Vortex.World.Observable
          **************/
 
         // Called when a chunk has been updated
-        private void ChunksUpdated(List<Chunk> chunks)
+        private void ChunksUpdated(List<IChunk> chunks)
         {
             bool doUpdate;
             lock (this)
@@ -365,7 +365,7 @@ namespace Vortex.World.Observable
         }
 
         // Called when a chunk has been loaded from fresh
-        private void ChunksLoaded(List<Chunk> chunks)
+        private void ChunksLoaded(List<IChunk> chunks)
         {
             ChunksUpdated(chunks);
         }

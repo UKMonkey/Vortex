@@ -30,7 +30,7 @@ namespace Vortex.Interface.Net
         void Write(RemotePlayer remotePlayer);
         void Write(Color4 colour);
         void Write(ILight light);
-        void Write(Chunk chunk);
+        void Write(IChunk chunk);
         void Write(ChunkKey chunkKey);
         void Write(Vector3 chunk);
         void Write<T>(T property) where T : Trait;
@@ -40,7 +40,7 @@ namespace Vortex.Interface.Net
         void Write(List<RemotePlayer> remotePlayers);
         void Write(List<short> shorts);
         void Write(List<int> ints);
-        void Write(List<Chunk> chunks);
+        void Write(List<IChunk> chunks);
         void Write(List<ILight> lights);
         void Write(List<Entity> entities);
         void Write(List<ChunkKey> chunkKeys);

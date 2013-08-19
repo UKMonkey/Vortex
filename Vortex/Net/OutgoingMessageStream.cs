@@ -237,23 +237,7 @@ namespace Vortex.Net
             }
         }
 
-        protected bool Write(ChunkBlocks blocks)
-        {
-            var blocksWritten = (blocks == null);
-            WriteBool(blocksWritten);
-
-            if (!blocksWritten)
-            {
-                return blocksWritten;
-            }
-
-            WriteBool(blocksWritten);
-            var data = blocks.GetBlockData();
-            Write(data);
-            return blocksWritten;
-        }
-
-        public void Write(List<Chunk> chunks)
+        public void Write(List<IChunk> chunks)
         {
             WriteByte((byte)chunks.Count);
             foreach (var chunk in chunks)
@@ -262,11 +246,11 @@ namespace Vortex.Net
             }
         }
 
-        public void Write(Chunk chunk)
+        public void Write(IChunk chunk)
         {
             Write(chunk.Key);
-            if (!Write(chunk.ChunkBlocks))
-                Write(chunk.ChunkMesh);
+            WriteInt16(chunk.Type);
+            WriteBytes(chunk.GetFullData());
             Write(chunk.Lights);
         }
 

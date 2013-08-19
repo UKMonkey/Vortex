@@ -66,7 +66,8 @@
     <Compile Include="EntityBase\EntityModel.cs" />
     <Compile Include="IConsoleCommandContext.cs" />
     <Compile Include="Net\RejectionReasonEnum.cs" />
-    <Compile Include="Serialisation\StreamExtensions.cs" />
+    <Compile Include="Serialisation\InStreamExtensions.cs" />
+    <Compile Include="Serialisation\OutStreamExtensions.cs" />
     <Compile Include="StartArguments.cs" />
     <Compile Include="DamageTypeEnum.cs" />
     <Compile Include="Debugging\TimingStats.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="World\ChunkMesh.cs" />
     <Compile Include="World\ChunkMeshTriangle.cs" />
     <Compile Include="World\Chunks\Chunk.cs" />
+    <Compile Include="World\Chunks\ChunkFactory.cs" />
     <Compile Include="World\Chunks\ChunkKey.cs" />
     <Compile Include="World\Chunks\IChunk.cs" />
     <Compile Include="World\Chunks\IChunkCache.cs" />

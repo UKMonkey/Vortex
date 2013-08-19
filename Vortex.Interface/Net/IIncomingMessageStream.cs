@@ -38,8 +38,8 @@ namespace Vortex.Interface.Net
         List<RemotePlayer> ReadRemotePlayers();
         RemotePlayer ReadRemotePlayer();
         List<string> ReadStringList();
-        List<Chunk> ReadChunks();
-        Chunk ReadChunk();
+        List<IChunk> ReadChunks();
+        IChunk ReadChunk();
         ChunkKey ReadChunkKey();
         List<ChunkKey> ReadChunkKeys();
         T ReadTrait<T>() where T : Trait, new();

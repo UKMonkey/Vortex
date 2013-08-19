@@ -5,7 +5,7 @@ namespace Vortex.Net.Messages
 {
     public class ServerChunkUpdatedMessage : Message
     {
-        public Chunk Chunk { get; set; }
+        public IChunk Chunk { get; set; }
 
         public ServerChunkUpdatedMessage()
         {

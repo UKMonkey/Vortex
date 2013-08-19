@@ -55,7 +55,7 @@ namespace Vortex.Interface.World.Wrapper
 //                item.SaveTrigger(toSave);
         }
 
-        public void SaveChunks(List<Chunk> chunksToSave)
+        public void SaveChunks(List<IChunk> chunksToSave)
         {
             foreach (var item in ChunkSavers)
                 item.SaveChunks(chunksToSave);

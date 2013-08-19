@@ -1,102 +1,76 @@
+using Vortex.Interface.Serialisation;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Vortex.Interface.World.Chunks
 {
-    public delegate void SingleChunkCallback(Chunk chunk);
-    public delegate void ChunkBlockCallback(Chunk chunk, short x, short y, short z);
-    public delegate void ChunkMeshCallback(Chunk chunk);
-
-    public class Chunk
+    public class Chunk : IChunk
     {
-        public event SingleChunkCallback ChunkUpdated;
-        public event ChunkBlockCallback ChunkBlockUpdated;
-        public event ChunkMeshCallback ChunkMeshUpdated;
+        public event SingleChunkCallback ChunkChanged;
 
         // position
-        public readonly ChunkKey Key;
+        private short? _type;
+        public short Type
+        {
+            get 
+            {
+                if (_type == null)
+                    _type = ChunkFactory.GetInstance().GetChunkType(this);
+                return _type.Value;
+            }
+        }
+
+        public ChunkKey Key { get; set; }
 
         // Static lights
         public List<ILight> Lights { get; private set; }
-        
-        // for block based chunks - this may or may not be populated
-        // if this is available, it can be used to generate the meshes
-        public ChunkBlocks ChunkBlocks { get; private set; }
+        public short LightCount { get; private set; }
 
         // for mesh based chunks
-        private ChunkMesh _mesh;
-        public ChunkMesh ChunkMesh 
+        public ChunkMesh ChunkMesh { get; private set; }
+
+        // what level is currently observed by the user
+        public short LevelOfInterest { get; set; }
+
+
+        protected Chunk(ChunkKey key, IEnumerable<ILight> lights)
         {
-            get
-            {
-                if (_dirty)
-                {
-                    _mesh.ReplaceContents(GenerateChunkMesh());
-                    _dirty = false;
-                }
-                return _mesh;
-            }
-            
-            private set { _mesh = value; }
+            Key = key;
+            Lights = lights.ToList();
+            LightCount = (short)Lights.Count();
         }
-
-        //public const float ChunkWorldSize = 16;
-
-        // helper functions for establishing how this chunk is stored
-        public bool BlockBased { get { return ChunkBlocks != null; } }
-        public bool MeshBased { get { return ChunkMesh != null; } }
-
-        // rather than update the mesh several times if multiple blocks have changed, we just 
-        // flag the mesh as dirty and rebuild it if it is...
-        private bool _dirty = false;
 
         public Chunk(ChunkKey key, ChunkMesh mesh, IEnumerable<ILight> lights)
+            : this(key, lights)
         {
-            Key = key;
             ChunkMesh = mesh;
-            Lights = lights.ToList();
-            ChunkBlocks = null;
-
             ChunkMesh.ChunkMeshUpdated += MeshUpdated;
         }
 
-
-        public Chunk(ChunkKey key, ChunkBlocks blocks, IEnumerable<ILight> lights)
-        {
-            Key = key;
-            ChunkBlocks = blocks;
-            Lights = lights.ToList();
-            ChunkMesh = GenerateChunkMesh();
-
-            ChunkBlocks.BlocksUpdated += BlocksUpdated;
-            ChunkMesh.ChunkMeshUpdated += MeshUpdated;
-        }
-
-        private ChunkMesh GenerateChunkMesh()
-        {
-            //TODO
-            return new ChunkMesh();
-        }
-
-        private void BlocksUpdated(ChunkBlocks blocks, short x, short y, short z)
-        {
-            if (ChunkBlockUpdated == null)
-                return;
-
-            _dirty = true;
-            ChunkBlockUpdated(this, x, y, z);
-        }
-
-        // TODO
-        // we never really handle this well, might want to look into it
-        // as the observable area might need to be updated?
         private void MeshUpdated(ChunkMesh mesh)
         {
-            if (ChunkMeshUpdated == null)
-                return;
+            if (ChunkChanged != null)
+                ChunkChanged(this);
+        }
 
-            ChunkMeshUpdated(this);
-            ChunkUpdated(this);
+        public byte[] GetFullData()
+        {
+            var byteStream = new MemoryStream();
+            byteStream.Write(ChunkMesh);
+            return byteStream.ToArray();
+        }
+
+        public byte[] GetDirtyData()
+        {
+            return GetFullData();
+        }
+
+        public void ApplyData(byte[] data)
+        {
+            var byteStream = new MemoryStream(data);
+            var newMesh = byteStream.ReadChunkMesh();
+            ChunkMesh.ReplaceContents(newMesh);
         }
     }
 }

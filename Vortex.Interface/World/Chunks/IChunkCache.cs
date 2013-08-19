@@ -19,7 +19,7 @@ namespace Vortex.Interface.World.Chunks
         /// </summary>
         /// <param name="keys"></param>
         /// <returns></returns>
-        List<Chunk> GetChunks(IEnumerable<ChunkKey> keys);
+        List<IChunk> GetChunks(IEnumerable<ChunkKey> keys);
 
         /// <summary>
         /// Once complete, any stored chunks waiting to be pushed to "OnChunksUpdated" or "OnChunksLoaded" will be guarenteed to have been done.

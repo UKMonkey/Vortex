@@ -221,10 +221,10 @@ namespace Vortex.Net
             return newEntity;
         }
 
-        public List<Chunk> ReadChunks()
+        public List<IChunk> ReadChunks()
         {
             var count = _netIncomingMessage.ReadByte();
-            var result = new List<Chunk>(count);
+            var result = new List<IChunk>(count);
             for (var i = 0; i < count; i++)
             {
                 result.Add(ReadChunk());
@@ -262,12 +262,18 @@ namespace Vortex.Net
             return chunkMesh;
         }
 
-        public Chunk ReadChunk()
+        public IChunk ReadChunk()
         {
             var chunkKey = ReadChunkKey();
-            var chunkMesh = ReadChunkMesh();
+            var type = ReadInt16();
+            var data = ReadBytes();
             var lights = ReadLights();
-            return new Chunk(chunkKey, chunkMesh, lights);
+
+            var chunk = ChunkFactory.GetInstance().GetChunk(type);
+            chunk.ApplyData(data);
+            chunk.Lights.AddRange(lights);
+            chunk.Key = chunkKey;
+            return chunk;
         }
 
         public ChunkKey ReadChunkKey()

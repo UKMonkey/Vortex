@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Vortex.Interface.World.Chunks
 {
-    public delegate void ChunkCallback(List<Chunk> items);
+    public delegate void ChunkCallback(List<IChunk> items);
     public delegate void ChunkKeyCallback(List<ChunkKey> items);
 
     public interface IChunkLoader : IDisposable

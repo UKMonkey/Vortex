@@ -51,11 +51,11 @@ namespace Vortex.World
         public event ChunkCallback OnChunksLoaded;
         public event ChunkCallback OnChunksUpdated;
 
-        private readonly Dictionary<ChunkKey, Chunk> _chunkCache;
+        private readonly Dictionary<ChunkKey, IChunk> _chunkCache;
 
         private readonly HashSet<ChunkKey> _requestedChunks;
-        private readonly List<Chunk> _updatedChunks;
-        private readonly List<Chunk> _loadedChunks;
+        private readonly List<IChunk> _updatedChunks;
+        private readonly List<IChunk> _loadedChunks;
 
 
         /** Trigger cache info
@@ -95,10 +95,10 @@ namespace Vortex.World
             _loader.OnEntityDeleted += EntitiesDeleted;
 
             // chunks
-            _chunkCache = new Dictionary<ChunkKey, Chunk>();
+            _chunkCache = new Dictionary<ChunkKey, IChunk>();
             _requestedChunks = new HashSet<ChunkKey>();
-            _updatedChunks = new List<Chunk>();
-            _loadedChunks = new List<Chunk>();
+            _updatedChunks = new List<IChunk>();
+            _loadedChunks = new List<IChunk>();
 
             _loader.OnChunkLoad += ChunksLoaded;
             _loader.OnChunksGenerated += ChunksGenerated;
@@ -122,10 +122,10 @@ namespace Vortex.World
         /** Get any chunks in memory
          *  if it's not available then request it from the chunkLoader
          */
-        public List<Chunk> GetChunks(IEnumerable<ChunkKey> keys)
+        public List<IChunk> GetChunks(IEnumerable<ChunkKey> keys)
         {
             var toLoad = new List<ChunkKey>();
-            var available = new List<Chunk>();
+            var available = new List<IChunk>();
 
             lock (_chunkCache)
             {
@@ -156,7 +156,7 @@ namespace Vortex.World
             return available;
         }
 
-        private void ChunksGenerated(List<Chunk> chunks)
+        private void ChunksGenerated(List<IChunk> chunks)
         {
             foreach (var changedChunk in chunks)
             {
@@ -171,7 +171,7 @@ namespace Vortex.World
         /** Called by the chunkLoader when chunks have been loaded
          *  Do nothing - deal with it later
          */
-        private void ChunksLoaded(List<Chunk> chunks)
+        private void ChunksLoaded(List<IChunk> chunks)
         {
             lock (_chunkCache)
             {
@@ -182,13 +182,13 @@ namespace Vortex.World
             {
                 var key = chunk.Key;
 
-                chunk.ChunkMeshUpdated += ChunkMeshUpdated;
+                chunk.ChunkChanged += ChunkMeshUpdated;
                 _loader.LoadTriggers(key);
                 _loader.LoadEntities(key);
             }
         }
 
-        private void ChunkMeshUpdated(Chunk chunk)
+        private void ChunkMeshUpdated(IChunk chunk)
         {
             _updatedChunks.Add(chunk);
         }
@@ -511,7 +511,7 @@ namespace Vortex.World
 
         /** sends notifications to 'OnChunksLoaded' or 'OnChunksUpdated' for anything changed since last call.
          */
-        private void ChunksUpdated(List<Chunk> changedChunks, bool isNew)
+        private void ChunksUpdated(List<IChunk> changedChunks, bool isNew)
         {
             if (changedChunks.Count == 0)
                 return;

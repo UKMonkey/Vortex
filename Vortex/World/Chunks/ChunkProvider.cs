@@ -37,7 +37,7 @@ namespace Vortex.World.Chunks
             _loaders[0].LoadChunks(keys);
         }
         
-        private void ChunksLoaded(List<Chunk> chunks)
+        private void ChunksLoaded(List<IChunk> chunks)
         {
             foreach (var chunk in chunks)
             {
@@ -48,7 +48,7 @@ namespace Vortex.World.Chunks
                 OnChunkLoad(chunks);
         }
 
-        private void ChunksGenerated(List<Chunk> chunks)
+        private void ChunksGenerated(List<IChunk> chunks)
         {
             foreach (var chunk in chunks)
             {
