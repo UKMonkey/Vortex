@@ -8,6 +8,7 @@ using Psy.Graphics.Effects;
 using Psy.Graphics.Models.Renderers;
 using Psy.Graphics.VertexDeclarations;
 using SlimMath;
+using Vortex.Interface;
 using Vortex.Interface.EntityBase;
 using Vortex.Interface.World;
 using Vortex.Interface.World.Chunks;
@@ -21,13 +22,13 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
         private const int DefaultTriangleListLength = 30;
         private const int DefaultMaterialListLength = 10;
         private const float TextureScaleFactor = 8f;
-        private const float TextureScale = (Chunk.ChunkWorldSize / TextureScaleFactor);
         private const int CubeMapSize = 256;
 
         public const bool RenderTerrain = true;
 
-        private const float EntityRenderViewRadiusSquared = (Chunk.ChunkWorldSize * 1.2f) * (Chunk.ChunkWorldSize * 1.2f);
-        private const float LightRenderViewRadiusSquared = (Chunk.ChunkWorldSize * 1.5f) * (Chunk.ChunkWorldSize * 1.5f);
+        private readonly float _textureScale;
+        private readonly float _entityRenderViewRadiusSquared;
+        private readonly float _lightRenderViewRadiusSquared;
 
         private bool _shouldGenerateGeometry;
         private readonly MaterialCache _materialCache;
@@ -91,7 +92,7 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
         private readonly ModelInstanceRenderer _modelInstanceRenderer;
         private Vector2 _bottomLeft;
 
-        public Shadowed(GraphicsContext graphicsContext, IObservableArea observableArea, MaterialCache materialCache)
+        public Shadowed(GraphicsContext graphicsContext, IObservableArea observableArea, MaterialCache materialCache, IEngine engine)
             : base(observableArea)
         {
             _fx = graphicsContext.CreateEffect("omniShadow2.fx");
@@ -113,6 +114,9 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
             _viewingAngleHandle = _fx.CreateHandle("viewingAngle");
 
             _graphicsContext = graphicsContext;
+            _textureScale = engine.ChunkWorldSize / TextureScaleFactor;
+            _entityRenderViewRadiusSquared = (engine.ChunkWorldSize * 1.2f) * (engine.ChunkWorldSize * 1.2f);
+            _lightRenderViewRadiusSquared = (engine.ChunkWorldSize * 1.5f) * (engine.ChunkWorldSize * 1.5f);
 
             _shouldGenerateGeometry = false;
 
@@ -366,7 +370,7 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
             foreach (var light in ObservableArea.Lights)
             {
                 var lightDistance = (light.Position - _currentCamera.Vector).LengthSquared;
-                if (lightDistance > LightRenderViewRadiusSquared)
+                if (lightDistance > _lightRenderViewRadiusSquared)
                     continue;
 
                 if (_renderOpSoloLight != 0 && _renderOpSoloLight != lightIdx)
@@ -571,7 +575,7 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
                     continue;
 
                 var distanceFromCamera = entity.GetPosition().DistanceSquared(_currentCamera.Vector);
-                if (distanceFromCamera > EntityRenderViewRadiusSquared)
+                if (distanceFromCamera > _entityRenderViewRadiusSquared)
                     continue;
 
                 var world = MatrixHelper.GetEntityWorldMatrix(_currentCamera, entity);
@@ -644,7 +648,7 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
                 var position = entity.GetPosition();
 
                 var distanceFromCamera = position.DistanceSquared(_currentCamera.Vector);
-                if (distanceFromCamera > EntityRenderViewRadiusSquared)
+                if (distanceFromCamera > _entityRenderViewRadiusSquared)
                 {
                     _cameraDistanceCull++;
                     continue;
@@ -795,9 +799,9 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
                 var position2 = (triangle.P2 + offset);
                 var normal = new Vector3(0, 0, -1.0f);
 
-                var uv0 = (triangle.P0 / TextureScale).Scale(1, -1, 1).AsVector2();
-                var uv1 = (triangle.P1 / TextureScale).Scale(1, -1, 1).AsVector2();
-                var uv2 = (triangle.P2 / TextureScale).Scale(1, -1, 1).AsVector2();
+                var uv0 = (triangle.P0 / _textureScale).Scale(1, -1, 1).AsVector2();
+                var uv1 = (triangle.P1 / _textureScale).Scale(1, -1, 1).AsVector2();
+                var uv2 = (triangle.P2 / _textureScale).Scale(1, -1, 1).AsVector2();
 
                 dataStream.WriteRange(
                     new[]

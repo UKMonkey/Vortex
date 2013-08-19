@@ -633,7 +633,8 @@ namespace Vortex.Client
             _worldDataCache = new WorldDataCache(
                                     new SimpleWorldProviderWrapper(_chunkLoader, _entityLoader, _triggerLoader),
                                     new WorldSaverWrapper(), 
-                                    GetObservedChunkKeys);
+                                    GetObservedChunkKeys, 
+                                    this);
 
             return _worldDataCache;
         }
@@ -737,6 +738,11 @@ namespace Vortex.Client
             var client = new RemotePlayer(clientId, playerName);
             RemotePlayers.AddRemotePlayer(client);
             Game.OnClientJoin(client);
+        }
+
+        public void SetChunkSize(short chunkSize)
+        {
+            ChunkWorldSize = chunkSize;
         }
     }
 }

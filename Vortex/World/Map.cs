@@ -6,7 +6,6 @@ using Psy.Core.Collision;
 using SlimMath;
 using Vortex.Interface;
 using Vortex.Interface.Debugging;
-using Vortex.Interface.World;
 using Vortex.Interface.World.Chunks;
 using Vortex.World.Interfaces;
 using Vortex.World.Observable;
@@ -20,16 +19,18 @@ namespace Vortex.World
         private readonly WorldDataCache _dataCache;
         private readonly Dictionary<ICamera, IObservableArea> _observableAreas;
         private readonly Dictionary<ChunkKey, IMeshCollisionTester> _staticEntityMeshes;
+        private readonly IEngine _engine;
         private BottomLeftUpdateWorker _bottomLeftUpdateWorker;
         private LightsUpdateWorker _lightsUpdateWorker;
         private MeshUpdateWorker _meshUpdateWorker;
         private MeshCalculatorWorker _meshCalculatorWorker;
+        private float _maxObservableSize = 0;
 
         public float MaximumObservableAreaSize { get; private set; }
 
         public string TileSetName { get; set; }
 
-        public Map(IOutsideLightingColour outsideLightingColour, WorldDataCache cache)
+        public Map(IOutsideLightingColour outsideLightingColour, WorldDataCache cache, IEngine engine)
         {
             // todo: consider moving this elsewhere? a config maybe?
             TileSetName = "tileset1.adf";
@@ -37,6 +38,7 @@ namespace Vortex.World
             _dataCache = cache;
             _observableAreas = new Dictionary<ICamera, IObservableArea>();
             _staticEntityMeshes = new Dictionary<ChunkKey, IMeshCollisionTester>();
+            _engine = engine;
 
             MaximumObservableAreaSize = 0;
         }
@@ -113,9 +115,9 @@ namespace Vortex.World
             if (_observableAreas.ContainsKey(camera))
                 return _observableAreas[camera];
 
-            _bottomLeftUpdateWorker = new BottomLeftUpdateWorker();
-            _lightsUpdateWorker = new LightsUpdateWorker(_dataCache);
-            _meshUpdateWorker = new MeshUpdateWorker(_dataCache);
+            _bottomLeftUpdateWorker = new BottomLeftUpdateWorker(_engine);
+            _lightsUpdateWorker = new LightsUpdateWorker(_dataCache, _engine);
+            _meshUpdateWorker = new MeshUpdateWorker(_dataCache, _engine);
             _meshCalculatorWorker = new MeshCalculatorWorker();
 
             var updateMethods = 
@@ -127,10 +129,11 @@ namespace Vortex.World
                     _meshCalculatorWorker,
                 };
 
-            var observableArea = new ObservableArea(_outsideLightingColour, () => camera.Vector, _dataCache, updateMethods);
+            var observableArea = new ObservableArea(_outsideLightingColour, () => camera.Vector, _dataCache, updateMethods, _engine);
             _observableAreas.Add(camera, observableArea);
 
-            MaximumObservableAreaSize = Math.Max(MaximumObservableAreaSize, ObservableArea.ObservedSize);
+            MaximumObservableAreaSize = Math.Max(MaximumObservableAreaSize, observableArea.ObservedSize);
+            _maxObservableSize = Math.Max(_maxObservableSize, observableArea.ObservedSize);
 
             return observableArea;
         }
@@ -194,6 +197,11 @@ namespace Vortex.World
                     ret.Add(next);
             }
             return ret;
+        }
+
+        public float GetMaxObservableSize()
+        {
+            return _maxObservableSize;
         }
     }
 }

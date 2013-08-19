@@ -5,6 +5,7 @@ using System.Threading;
 using Psy.Core.Collision;
 using Psy.Core.Logging;
 using SlimMath;
+using Vortex.Interface;
 using Vortex.Interface.Debugging;
 using Vortex.Interface.World;
 using Vortex.Interface.World.Chunks;
@@ -67,10 +68,10 @@ namespace Vortex.World.Observable
         private volatile HashSet<ChunkKey> _observedChunksExtendedA;
         private volatile HashSet<ChunkKey> _observedChunksExtendedB;
 
-        public const float ObservedSize = ChunkSquareSize*Chunk.ChunkWorldSize;
-        public const float HalfObservedSize = ObservedSize/2;
+        public float ObservedSize { get; private set; }
+        public float HalfObservedSize { get; private set; }
 
-        private readonly static Vector2 MiddleOffset = new Vector2(HalfObservedSize, HalfObservedSize);
+        private readonly Vector2 _middleOffset;
 
 
         /** Double buffered attributes **/
@@ -105,7 +106,7 @@ namespace Vortex.World.Observable
                 if (_bufferState) _bottomLeftB = value;
                 else _bottomLeftA = value;
 
-                MiddleBuffer = value + MiddleOffset;
+                MiddleBuffer = value + _middleOffset;
             }
         }
 
@@ -146,18 +147,26 @@ namespace Vortex.World.Observable
         // worker request count - see above
         private int _workCount;
 
+        // engine that we're working with
+        private IEngine _engine;
+
         public ObservableArea(IOutsideLightingColour outsideLightingColour, GetVectorCallback getCenterPosition, 
-            IChunkCache cache, List<IObservableAreaWorker> updaters)
+            IChunkCache cache, List<IObservableAreaWorker> updaters, IEngine engine)
         {
             Debug.Assert(outsideLightingColour != null);
             Debug.Assert(cache != null);
             Debug.Assert(updaters != null);
+
+            ObservedSize = ChunkSquareSize*engine.ChunkWorldSize;
+            HalfObservedSize = ObservedSize/2;
+            _middleOffset = new Vector2(HalfObservedSize, HalfObservedSize);
 
             OutsideLightingColour = outsideLightingColour;
             _getCenterPosition = getCenterPosition;
             _chunkCache = cache;
             _chunkCache.OnChunksLoaded += ChunksLoaded;
             _chunkCache.OnChunksUpdated += ChunksUpdated;
+            _engine = engine;
 
             _updaters = updaters;
 
@@ -256,14 +265,14 @@ namespace Vortex.World.Observable
         private ChunkKey GetCentreChunkKey()
         {
             var position = CenterPosition;
-            var key = Utils.GetChunkKeyForPosition(position);
+            var key = _engine.GetChunkKeyForPosition(position);
             return key;
         }
 
         // update all the keys that we want to be watching
         private void UpdateObserveredKeys(Vector3 position)
         {
-            var key = Utils.GetChunkKeyForPosition(position);
+            var key = _engine.GetChunkKeyForPosition(position);
             const int middle = (ChunkSquareSize/2);
 
             var monitoredChunks = ChunksObservedBuffer;

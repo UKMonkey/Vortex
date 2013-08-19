@@ -46,5 +46,10 @@ namespace Vortex.Interface
         /// returns the different types of blocks that will exist in the world
         /// </summary
         IEnumerable<BlockProperties> GetBlockTypes();
+
+        /// <summary>
+        /// The size of the chunk in the world
+        /// </summary>
+        short GetChunkWorldSize();
     }
 }

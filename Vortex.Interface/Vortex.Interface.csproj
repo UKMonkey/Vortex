@@ -111,6 +111,7 @@
     <Compile Include="World\ChunkMeshTriangle.cs" />
     <Compile Include="World\Chunks\Chunk.cs" />
     <Compile Include="World\Chunks\ChunkKey.cs" />
+    <Compile Include="World\Chunks\IChunk.cs" />
     <Compile Include="World\Chunks\IChunkCache.cs" />
     <Compile Include="World\Chunks\IChunkLoader.cs" />
     <Compile Include="World\Chunks\IChunkSaver.cs" />

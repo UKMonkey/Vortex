@@ -6,6 +6,7 @@ using Psy.Core.Console;
 using Psy.Graphics;
 using Psy.Graphics.Effects;
 using Psy.Graphics.VertexDeclarations;
+using Vortex.Interface;
 using Vortex.Interface.World;
 using Vortex.Interface.World.Chunks;
 using Vortex.World.Observable;
@@ -27,13 +28,15 @@ namespace Vortex.Renderer.Weather
         private readonly Splash[] _splashes;
         private List<ChunkMeshTriangle> _outsideTriangles;
         private readonly GraphicsContext _graphicsContext;
+        private readonly IEngine _engine;
 
-        public RainRenderer(GraphicsContext graphicsContext, IObservableArea observableArea, MaterialCache materialCache)
+        public RainRenderer(GraphicsContext graphicsContext, IObservableArea observableArea, MaterialCache materialCache, IEngine engine)
         {
             _graphicsContext = graphicsContext;
             _observableArea = observableArea;
             _materialCache = materialCache;
             _observableArea.Updated += ObservableAreaUpdated;
+            _engine = engine;
 
             StaticConsole.Console.RegisterFloat("rain_life", () => Splash.LifeDuration, delegate(float f) { Splash.LifeDuration = (int)f; });
             StaticConsole.Console.RegisterFloat("rain_mod", () => Splash.MoveModifier, delegate(float f) { Splash.MoveModifier = (int)f; });
@@ -102,12 +105,11 @@ namespace Vortex.Renderer.Weather
         private void PopulateOutsideChunkMeshList()
         {
             _outsideTriangles = new List<ChunkMeshTriangle>(10);
-
-            const float maxRange = Chunk.ChunkWorldSize * 1.5f;
+            var maxRange = _engine.ChunkWorldSize * 1.5f;
 
             foreach (var chunkMesh in _observableArea.ChunkMeshes)
             {
-                if ((chunkMesh.WorldVector.Translate(Chunk.ChunkWorldSize / 2.0f, Chunk.ChunkWorldSize / 2.0f, 0))
+                if ((chunkMesh.WorldVector.Translate(_engine.ChunkWorldSize / 2.0f, _engine.ChunkWorldSize / 2.0f, 0))
                     .DistanceSquared(_observableArea.Middle.AsVector3()) > (maxRange * maxRange))
                     continue;
 

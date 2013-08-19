@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Psy.Core;
 using SlimMath;
+using Vortex.Interface;
 using Vortex.Interface.EntityBase.Properties;
 using Psy.Core.Console;
 using Psy.Graphics;
@@ -38,6 +39,7 @@ namespace Vortex.Renderer
         private readonly EntityNameplateRenderer _entityNameplateRenderer;
         private readonly MaterialCache _materialCache;
         public EntityCollection EntityCollectionSystem { get; set; }
+        private readonly IEngine _engine;
 
 
         public float MinViewRange { get; set; }
@@ -71,7 +73,7 @@ namespace Vortex.Renderer
             }
         }
 
-        public View(GraphicsContext graphicsContext, MaterialCache materialCache)
+        public View(GraphicsContext graphicsContext, MaterialCache materialCache, IEngine engine)
         {
             MinViewRange = 0;
             ViewRange = 0;
@@ -80,6 +82,7 @@ namespace Vortex.Renderer
 
             _graphicsContext = graphicsContext;
             _materialCache = materialCache;
+            _engine = engine;
 
             _graphicsContext.LoadTextureAtlases("_atlases.adfm");
 
@@ -149,8 +152,8 @@ namespace Vortex.Renderer
         {
             _world = world;
             var observableArea = world.GetMap().AddCamera(Camera);
-            _worldRenderer = new Shadowed(_graphicsContext, observableArea, _materialCache);
-            _rainRenderer = new RainRenderer(_graphicsContext, observableArea, _materialCache);
+            _worldRenderer = new Shadowed(_graphicsContext, observableArea, _materialCache, _engine);
+            _rainRenderer = new RainRenderer(_graphicsContext, observableArea, _materialCache, _engine);
         }
 
         public void UnloadWorld()

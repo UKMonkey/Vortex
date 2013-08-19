@@ -3,6 +3,7 @@ using Psy.Core.Console;
 using Psy.Graphics;
 using Psy.Graphics.Text;
 using SlimMath;
+using Vortex.Interface;
 using Vortex.Renderer;
 using Vortex.World.Chunks;
 
@@ -14,9 +15,10 @@ namespace Vortex.Client.Renderer
         private readonly View _view;
         private readonly IFont _font;
         private readonly Color4 _colour;
-        private Vector2 _topRight = new Vector2(20, 250);
+        private readonly IEngine _engine;
+        private Vector2 _topRight = new Vector2(20, 250);        
 
-        public PositionRenderer(GraphicsContext graphicsContext, View view)
+        public PositionRenderer(GraphicsContext graphicsContext, View view, IEngine engine)
         {
             StaticConsole.Console.RegisterFloat(
                 "posInfo", () => _visible ? 1 : 0,
@@ -25,6 +27,7 @@ namespace Vortex.Client.Renderer
             _view = view;
             _font = graphicsContext.GetFont("Consolas");
             _colour = new Color4(0.7f, 0.5f, 0.5f);
+            _engine = engine;
         }
 
         public void Render()
@@ -39,7 +42,7 @@ namespace Vortex.Client.Renderer
                 position = _view.CameraPosition.Vector;
 
             var positionText = GetPositionText(position);
-            var chunkText = GetChunkText(position);
+            var chunkText = GetChunkText(_engine, position);
 
             _font.DrawString(positionText, (int)_topRight.X, (int)_topRight.Y, _colour);
             _font.DrawString(chunkText, (int)_topRight.X, (int)_topRight.Y + 15, _colour);
@@ -56,12 +59,12 @@ namespace Vortex.Client.Renderer
                                  Math.Round(position.Value.Z));
         }
 
-        private static string GetChunkText(Vector3? position)
+        private static string GetChunkText(IEngine engine, Vector3? position)
         {
             if (position == null)
                 return "Chunk:   x: -  y: -";
 
-            var chunkKey = Utils.GetChunkKeyForPosition(position.Value);
+            var chunkKey = engine.GetChunkKeyForPosition(position.Value);
             return string.Format("Chunk:   x: {0}  y: {1}", 
                             chunkKey.X, chunkKey.Y);
         }

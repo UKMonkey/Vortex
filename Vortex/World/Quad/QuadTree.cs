@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Psy.Core;
 using SlimMath;
+using Vortex.Interface;
 using Vortex.Interface.EntityBase;
 using Vortex.Interface.EntityBase.Properties;
 using Vortex.Interface.Traits;
@@ -14,11 +15,13 @@ namespace Vortex.World.Quad
     {
         private readonly Dictionary<ChunkKey, QuadTreeRegion> _regions;
         private readonly Dictionary<int, QuadTreeRegion> _idToQuad;
+        private readonly IEngine _engine;
 
-        public QuadTree()
+        public QuadTree(IEngine engine)
         {
             _regions = new Dictionary<ChunkKey, QuadTreeRegion>();
             _idToQuad = new Dictionary<int, QuadTreeRegion>();
+            _engine = engine;
         }
 
         private void TestRefreshItem(Entity changedEntity, Trait changed)
@@ -45,7 +48,7 @@ namespace Vortex.World.Quad
 
         public void InsertItem(Entity item)
         {
-            var area = Utils.GetChunkKeyForPosition(item.GetPosition());
+            var area = _engine.GetChunkKeyForPosition(item.GetPosition());
             InsertItem(area, item);
         }
 
@@ -181,8 +184,9 @@ namespace Vortex.World.Quad
             if (_regions.ContainsKey(area))
                 return;
 
-            var bottomLeft = Utils.GetChunkWorldVectorWithOffset(area);
-            var topRight = Utils.GetChunkWorldVectorWithOffset(area, new Vector3(Chunk.ChunkWorldSize, Chunk.ChunkWorldSize, 0));
+            var chunkSize = _engine.ChunkWorldSize;
+            var bottomLeft = _engine.GetChunkWorldVectorWithOffset(area);
+            var topRight = _engine.GetChunkWorldVectorWithOffset(area, new Vector3(chunkSize, chunkSize, 0));
             _regions.Add(area, new QuadTreeRegion(bottomLeft.AsVector2(), topRight.AsVector2()));
         }
 

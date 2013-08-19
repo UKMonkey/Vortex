@@ -57,6 +57,7 @@ namespace Vortex
 
         private IBlockTypeCache _blockTypeCache;
         public virtual IBlockTypeCache BlockTypeCache { get { return _blockTypeCache; } }
+        public short ChunkWorldSize { get; protected set; }
 
         protected EngineBase(StartArguments args)
         {
@@ -165,7 +166,7 @@ namespace Vortex
         /// <returns></returns>
         public IEnumerable<Entity> SpawnEntityAtRandomObservedLocation(short type, ChunkKey chunkKey, int numberToSpawn)
         {
-            const float distance = Chunk.ChunkWorldSize/2;
+            float distance = ChunkWorldSize/2f;
 
             var location = ChunkVectorToWorldVector(chunkKey, new Vector3(distance, distance, 0));
             return SpawnEntityAtRandomObservedLocation(type, location, distance, numberToSpawn);
@@ -231,8 +232,8 @@ namespace Vortex
                 var chunkKeyIndex = StaticRng.Random.Next(0, availableKeys.Count-1);
                 var chunk = availableKeys[chunkKeyIndex];
                 var chunkVector = new Vector3(
-                    (float) StaticRng.Random.NextDouble()*Chunk.ChunkWorldSize,
-                    (float) StaticRng.Random.NextDouble()*Chunk.ChunkWorldSize,
+                    (float) StaticRng.Random.NextDouble()*ChunkWorldSize,
+                    (float)StaticRng.Random.NextDouble() * ChunkWorldSize,
                     0);
                 var spot = ChunkVectorToWorldVector(chunk, chunkVector);
                 var rotation = StaticRng.Random.Next(0, 360) / 360f;
@@ -417,8 +418,8 @@ namespace Vortex
 
         public Vector3 ChunkVectorToWorldVector(ChunkKey chunkKey, Vector3 vector)
         {
-            return new Vector3(Chunk.ChunkWorldSize * chunkKey.X,
-                                Chunk.ChunkWorldSize * chunkKey.Y, 0) + vector;
+            return new Vector3(ChunkWorldSize * chunkKey.X,
+                                ChunkWorldSize * chunkKey.Y, 0) + vector;
         }
 
         /**  Load the map & create the world & map
@@ -435,8 +436,8 @@ namespace Vortex
 
             DataCache.OnEntitiesLoaded += NotifyGameOfNewEntities;
 
-            World = new World.World(DataCache, movementHandler);
-            Map = new Map(World, DataCache);
+            World = new World.World(this, DataCache, movementHandler);
+            Map = new Map(World, DataCache, this);
             World.UseMap(Map);
 
             LoadMapCompleted();

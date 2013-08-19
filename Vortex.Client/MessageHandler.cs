@@ -39,12 +39,14 @@ namespace Vortex.Client
 
         private void HandleHandshakeMessage(Message msg)
         {
+            var message = (ServerHandshakeMessage) msg;
             var newMsg = new ClientHandshakeMessage
             {
                 // hack: Vortex shouldn't have to get PlayerName like this.
                 PlayerName = StaticConfigurationManager.ConfigurationManager.GetString("PlayerName")
             };
             _client.SendMessage(newMsg);
+            _client.SetChunkSize(message.ChunkSize);
 
             _client.LoadMap();
         }

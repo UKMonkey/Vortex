@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Vortex.Interface;
 using Vortex.Interface.Debugging;
 using Vortex.Interface.World.Chunks;
 using Vortex.World.Chunks;
@@ -11,10 +12,12 @@ namespace Vortex.World.Observable.Workers
     class MeshUpdateWorker : IObservableAreaWorker
     {
         private readonly IChunkCache _chunkCache;
+        private readonly IEngine _engine;
 
-        public MeshUpdateWorker(IChunkCache cache)
+        public MeshUpdateWorker(IChunkCache cache, IEngine engine)
         {
             _chunkCache = cache;
+            _engine = engine;
         }
 
         public TimingStats WorkOnArea(IObservableArea area)
@@ -33,7 +36,7 @@ namespace Vortex.World.Observable.Workers
             meshBuffer.Clear();
             foreach (var chunk in chunks)
             {
-                chunk.ChunkMesh.WorldVector = Utils.GetChunkWorldVectorWithOffset(chunk.Key);
+                chunk.ChunkMesh.WorldVector = _engine.GetChunkWorldVectorWithOffset(chunk.Key);
                 meshBuffer.Add(chunk.ChunkMesh);
             }
             ret.CompletedTask("Adding data");

@@ -20,11 +20,17 @@ namespace Vortex.Interface
     
     public interface IEngine : IDisposable
     {
+        /******************************************
+         * Update rate information
+         *****************************************/
         int UpdateWorldFrequency { get; }
         int SynchronizeFrequency { get; }
-        ITimeOfDayProvider TimeOfDayProvider { get; }
         uint CurrentFrameNumber { get; }
+
+        ITimeOfDayProvider TimeOfDayProvider { get; }
+        
         IBlockTypeCache BlockTypeCache { get; }
+        short ChunkWorldSize { get; }
 
         IEnumerable<Entity> Entities { get; }
         IEntityFactory EntityFactory { get; }

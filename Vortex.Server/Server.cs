@@ -82,7 +82,7 @@ namespace Vortex.Server
 #region Messages
         private void UpdateHandshakes()
         {
-            var msg = new ServerHandshakeMessage();
+            var msg = new ServerHandshakeMessage{ChunkSize = ChunkWorldSize};
             var message = SerializeMessage(msg);
             _partiallyConnectedClients.SendMessage(message, msg.DeliveryMethod, msg.Channel);
         }
@@ -243,6 +243,7 @@ namespace Vortex.Server
             module.OnAttach(this);
             Game = module;
             Game.OnBegin();
+            ChunkWorldSize = Game.GetChunkWorldSize();
         }
 
         protected override WorldDataCache GetCachingStrategy()
@@ -281,12 +282,12 @@ namespace Vortex.Server
 #region Chunks
         public ChunkKey GetChunkKeyForWorldVector(Vector3 vector)
         {
-            return Utils.GetChunkKeyForPosition(vector);
+            return this.GetChunkKeyForPosition(vector);
         }
 
         public void GetChunkVectorForWorldVector(Vector3 worldVector, out ChunkKey key, out Vector3 chunkVector)
         {
-            Utils.GetChunkVectorFromWorldVector(worldVector, out key, out chunkVector);
+            this.GetChunkVectorFromWorldVector(worldVector, out key, out chunkVector);
         }
 
         public void PlaySoundOnEntity(Entity target, byte audioChannel, string soundFilename)
@@ -303,9 +304,10 @@ namespace Vortex.Server
         public IEnumerable<RemotePlayer> GetPlayersInterestedInChunk(ChunkKey key)
         {
             var players = RemotePlayers.GetPlayers();
-            const float maxDisSqrd = (ObservableArea.HalfObservedSize + Chunk.ChunkWorldSize) *
-                                     (ObservableArea.HalfObservedSize + Chunk.ChunkWorldSize);
-            var chunkCenter = Utils.GetCentreOfChunk(key);
+            var maxObservableAreaSize = Map.GetMaxObservableSize();
+            var maxDisSqrd = (maxObservableAreaSize/2 + ChunkWorldSize) *
+                             (maxObservableAreaSize/2 + ChunkWorldSize);
+            var chunkCenter = this.GetCentreOfChunk(key);
 
             foreach (var player in players)
             {

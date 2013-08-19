@@ -25,7 +25,7 @@ namespace Vortex.Server.World
             IWorldProvider worldProvider,
             IWorldSaver worldSaver,
             ObservedChunkKeyDelegate observedChunkKeys)
-            : base(worldProvider, worldSaver, observedChunkKeys)
+            : base(worldProvider, worldSaver, observedChunkKeys, engine)
         {
             _engine = engine;
 

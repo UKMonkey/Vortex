@@ -96,7 +96,7 @@ namespace Vortex.Client
             _running = true;
             _engine = new Client(_clientConfiguration, this, _startArguments);
 
-            View = new Vortex.Renderer.View(GraphicsContext, _engine.MaterialCache);
+            View = new Vortex.Renderer.View(GraphicsContext, _engine.MaterialCache, _engine);
             DevicePostReset += () => View.SetPerspectiveMatrix();
             
             StaticTaskQueue.TaskQueue.CreateRepeatingTask("EngineWindow.Update", Update, 30);
@@ -109,7 +109,7 @@ namespace Vortex.Client
             BulletRenderer = new BulletRenderer(GraphicsContext);
             _guiRenderer = new GuiRenderer(GraphicsContext, new Faceless());
 
-            _positionRenderer = new PositionRenderer(GraphicsContext, View);
+            _positionRenderer = new PositionRenderer(GraphicsContext, View, _engine);
             _frameNumberRenderer = new FrameNumberRenderer(GraphicsContext, _engine);
 
             CreatePerformanceCharts();

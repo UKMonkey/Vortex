@@ -18,9 +18,10 @@ namespace Vortex.Interface.World.Chunks
         public Rectangle GetWorldArea(IEngine engine)
         {
             var bottomLeft = engine.ChunkVectorToWorldVector(this, new Vector3(0, 0, 0));
+            var chunkWorldSize = engine.ChunkWorldSize;
 
-            return new Rectangle(new Vector2(bottomLeft.X, bottomLeft.Y + Chunk.ChunkWorldSize),
-                                 new Vector2(bottomLeft.X + Chunk.ChunkWorldSize, bottomLeft.Y));
+            return new Rectangle(new Vector2(bottomLeft.X, bottomLeft.Y + chunkWorldSize),
+                                 new Vector2(bottomLeft.X + chunkWorldSize, bottomLeft.Y));
         }
 
         public override int GetHashCode()

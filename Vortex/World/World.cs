@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SlimMath;
 using Vortex.BulletTracer;
+using Vortex.Interface;
 using Vortex.Interface.EntityBase;
 using Vortex.Interface.EntityBase.Behaviours;
 using Vortex.Interface.EntityBase.Properties;
@@ -33,13 +34,14 @@ namespace Vortex.World
         private readonly Dictionary<Entity, TestCache> _visableEntities;
 
         private IMap _map;
+        private IEngine _engine;
 
         public bool IsRaining { get; set; }
         public Color4 OutsideLightingColour { get; set; }
 
         public BulletCollection Bullets { get; private set; }
 
-        public World(WorldDataCache cache, IMovementHandler movementHandler)
+        public World(IEngine engine, WorldDataCache cache, IMovementHandler movementHandler)
         {
             TimeOfDay = 0;
             OutsideLightingColour = new Color4(1.0f, 0.8f, 0.8f, 0.9f);
@@ -54,6 +56,7 @@ namespace Vortex.World
             _cache.OnEntitiesUpdated += EntitiesUpdated;
 
             _visableEntities = new Dictionary<Entity, TestCache>();
+            _engine = engine;
         }
 
         public void Dispose()
@@ -103,7 +106,7 @@ namespace Vortex.World
                 if (!entity.GetStatic()) 
                     continue;
 
-                var chunkKey = Utils.GetChunkKeyForPosition(entity.GetPosition());
+                var chunkKey = _engine.GetChunkKeyForPosition(entity.GetPosition());
                 var allTesters = _cache.GetStaticEntities(chunkKey).Where(item => item.Mesh != null).Select(item => new MeshCollisionTester(item.Mesh));
                 _map.SetStaticItemsInChunk(chunkKey, allTesters);
                 return;

@@ -32,6 +32,7 @@ namespace Vortex.Interface.World.Chunks
                 if (_dirty)
                 {
                     _mesh.ReplaceContents(GenerateChunkMesh());
+                    _dirty = false;
                 }
                 return _mesh;
             }
@@ -39,7 +40,7 @@ namespace Vortex.Interface.World.Chunks
             private set { _mesh = value; }
         }
 
-        public const float ChunkWorldSize = 16;
+        //public const float ChunkWorldSize = 16;
 
         // helper functions for establishing how this chunk is stored
         public bool BlockBased { get { return ChunkBlocks != null; } }

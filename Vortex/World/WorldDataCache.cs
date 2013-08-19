@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using SlimMath;
 using Psy.Core.Logging;
+using Vortex.Interface;
 using Vortex.Interface.EntityBase;
 using Vortex.Interface.Traits;
 using Vortex.Interface.World.Chunks;
@@ -21,6 +22,8 @@ namespace Vortex.World
     {
         private const string LogLocation = "WorldDataCache";
         private readonly ObservedChunkKeyDelegate _observedChunkKeys;
+        private readonly IEngine _engine;
+
 
         /** Loading / Saving methods
          */
@@ -69,17 +72,18 @@ namespace Vortex.World
 
 
         public WorldDataCache(IWorldProvider worldProvider, IWorldSaver worldSaver,
-                                ObservedChunkKeyDelegate observedChunkKeys)
+                                ObservedChunkKeyDelegate observedChunkKeys, IEngine engine)
         {
             _observedChunkKeys = observedChunkKeys;
             _allEntitiesLock = new SpinLock(false);
 
             _loader = worldProvider;
             _saver = worldSaver;
+            _engine = engine;
 
             // entities
             _entityQuadTree =
-                new LockedQuadTree(new SplitQuadTree(new QuadTree(), new QuadTree()));
+                new LockedQuadTree(new SplitQuadTree(new QuadTree(_engine), new QuadTree(_engine)));
 
             _deletedEntities = new HashSet<Entity>();
             _updatedEntities = new HashSet<Entity>();
@@ -290,10 +294,10 @@ namespace Vortex.World
             var top = centre + new Vector3(0, distance, 0);
             var bottom = centre + new Vector3(0, -distance, 0);
 
-            var rightChunk = Utils.GetChunkKeyForPosition(right);
-            var topChunk = Utils.GetChunkKeyForPosition(top);
-            var bottomChunk = Utils.GetChunkKeyForPosition(bottom);
-            var leftChunk = Utils.GetChunkKeyForPosition(left);
+            var rightChunk = _engine.GetChunkKeyForPosition(right);
+            var topChunk = _engine.GetChunkKeyForPosition(top);
+            var bottomChunk = _engine.GetChunkKeyForPosition(bottom);
+            var leftChunk = _engine.GetChunkKeyForPosition(left);
 
             var ret = new List<ChunkKey>((topChunk.Y - bottomChunk.Y) * (rightChunk.X - leftChunk.X));
             for (var j = bottomChunk.Y; j <= topChunk.Y; ++j)
@@ -619,7 +623,7 @@ namespace Vortex.World
 
         private Entity UpdateMapWithNewEntity(Entity entity)
         {
-            var key = Utils.GetChunkKeyForPosition(entity.GetPosition());
+            var key = _engine.GetChunkKeyForPosition(entity.GetPosition());
 
             entity.OnDeath += OnEntityDeath;
             entity.OnPropertyChanged += UpdateEntity;

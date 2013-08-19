@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using SlimMath;
+using Vortex.Interface;
 using Vortex.Interface.Debugging;
 using Vortex.Interface.World;
 using Vortex.Interface.World.Chunks;
@@ -9,11 +10,13 @@ namespace Vortex.World.Observable.Workers
     class LightsUpdateWorker : IObservableAreaWorker
     {
         private readonly IChunkCache _chunkCache;
+        private readonly IEngine _engine;
 
 
-        public LightsUpdateWorker(IChunkCache cache)
+        public LightsUpdateWorker(IChunkCache cache, IEngine engine)
         {
             _chunkCache = cache;
+            _engine = engine;
         }
 
         public TimingStats WorkOnArea(IObservableArea area)
@@ -30,7 +33,7 @@ namespace Vortex.World.Observable.Workers
                 foreach (var light in chunk.Lights)
                 {
                     var toAdd = new Light(light.Position, light.Brightness, light.Colour);
-                    toAdd.Position += new Vector3(chunk.Key.X, chunk.Key.Y, 0) * Chunk.ChunkWorldSize;
+                    toAdd.Position += new Vector3(chunk.Key.X, chunk.Key.Y, 0) * _engine.ChunkWorldSize;
 
                     area.LightsBuffer.Add(toAdd);
                 }
