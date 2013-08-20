@@ -26,14 +26,19 @@ namespace Vortex.Interface.Serialisation
             return new ChunkKey(x, y);
         }
 
-        public static IChunk ReadChunk(this Stream stream)
+        public static IChunk ReadChunk(this Stream stream, IEngine engine)
         {
             var type = stream.ReadShort();
             var key = stream.ReadChunKey();
-            var mesh = stream.ReadChunkMesh();
+            var data = stream.ReadByteArray();
             var lights = stream.ReadLights();
 
-            return new Chunk(key, mesh, lights);
+            var chunk = engine.ChunkFactory.GetChunk(type);
+            chunk.Key = key;
+            chunk.ApplyData(data);
+            chunk.Lights.AddRange(lights);
+
+            return chunk;
         }
 
         public static ILight ReadLight(this Stream stream)

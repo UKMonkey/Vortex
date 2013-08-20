@@ -16,7 +16,7 @@ namespace Vortex.World.Chunks
 
         public ChunkFactory()
         {
-            RegisterChunkType(typeof(Chunk));
+            RegisterChunkType(typeof(MeshOnlyChunk));
         }
 
         public void RegisterChunkType(Type chunkType)

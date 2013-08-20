@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Vortex.Interface.World.Chunks
 {
-    public class Chunk : IChunk
+    public class MeshOnlyChunk : IChunk
     {
         public event SingleChunkCallback ChunkChanged;
 
@@ -20,18 +20,18 @@ namespace Vortex.Interface.World.Chunks
         // what level is currently observed by the user
         public short LevelOfInterest { get; set; }
 
-        public Chunk()
+        public MeshOnlyChunk()
         {
             Lights = new List<ILight>();
         }
 
-        protected Chunk(ChunkKey key, IEnumerable<ILight> lights)
+        protected MeshOnlyChunk(ChunkKey key, IEnumerable<ILight> lights)
         {
             Key = key;
             Lights = lights.ToList();
         }
 
-        public Chunk(ChunkKey key, ChunkMesh mesh, IEnumerable<ILight> lights)
+        public MeshOnlyChunk(ChunkKey key, ChunkMesh mesh, IEnumerable<ILight> lights)
             : this(key, lights)
         {
             ChunkMesh = mesh;

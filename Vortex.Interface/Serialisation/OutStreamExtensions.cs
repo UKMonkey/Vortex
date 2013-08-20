@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using Psy.Core.Serialization;
-using SlimMath;
 using Vortex.Interface.Traits;
 using Vortex.Interface.World;
 using Vortex.Interface.World.Chunks;
@@ -22,11 +21,12 @@ namespace Vortex.Interface.Serialisation
             stream.Write(key.Y);
         }
 
-        public static void Write(this Stream stream, IChunk chunk, short chunkType)
+        public static void Write(this Stream stream, IChunk chunk, IEngine engine)
         {
+            var chunkType = engine.ChunkFactory.GetChunkType(chunk);
             stream.Write(chunkType);
             stream.Write(chunk.Key);
-            stream.Write(chunk.ChunkMesh);
+            stream.Write(chunk.GetFullData());
             stream.Write(chunk.Lights, (short) chunk.Lights.Count);
         }
 

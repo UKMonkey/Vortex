@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Vortex.Interface.World.Blocks
+﻿namespace Vortex.Interface.World.Blocks
 {
     public static class BlockPropertyExtensions
     {
