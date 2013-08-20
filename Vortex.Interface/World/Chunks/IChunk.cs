@@ -9,13 +9,6 @@ namespace Vortex.Interface.World.Chunks
         event SingleChunkCallback ChunkChanged;
 
         /// <summary>
-        /// Returns the type of chunk this is.  The type is decided by the factory and is 
-        /// used to ensure that the client creates the right class of chunk to handle the 
-        /// dirty data messages
-        /// </summary>
-        short Type { get; }
-
-        /// <summary>
         /// Get/Set the key for this chunk
         /// </summary>
         ChunkKey Key { get; set; }

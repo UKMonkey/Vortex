@@ -22,9 +22,9 @@ namespace Vortex.Interface.Serialisation
             stream.Write(key.Y);
         }
 
-        public static void Write(this Stream stream, IChunk chunk)
+        public static void Write(this Stream stream, IChunk chunk, short chunkType)
         {
-            stream.Write(chunk.Type);
+            stream.Write(chunkType);
             stream.Write(chunk.Key);
             stream.Write(chunk.ChunkMesh);
             stream.Write(chunk.Lights, (short) chunk.Lights.Count);

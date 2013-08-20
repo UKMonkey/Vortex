@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Lidgren.Network;
-using Psy.Core;
 using SlimMath;
 using Vortex.Interface;
 using Vortex.Interface.EntityBase;
@@ -9,6 +8,7 @@ using Vortex.Interface.Net;
 using Vortex.Interface.Traits;
 using Vortex.Interface.World;
 using Vortex.Interface.World.Chunks;
+using Vortex.World.Chunks;
 
 namespace Vortex.Net
 {
@@ -239,7 +239,7 @@ namespace Vortex.Net
             var data = ReadBytes();
             var lights = ReadLights();
 
-            var chunk = ChunkFactory.GetInstance().GetChunk(type);
+            var chunk = _engine.ChunkFactory.GetChunk(type);
             chunk.ApplyData(data);
             chunk.Lights.AddRange(lights);
             chunk.Key = chunkKey;

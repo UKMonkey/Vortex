@@ -28,6 +28,7 @@ namespace Vortex.Interface
         uint CurrentFrameNumber { get; }
 
         ITimeOfDayProvider TimeOfDayProvider { get; }
+        IChunkFactory ChunkFactory { get; }
         
         IBlockTypeCache BlockTypeCache { get; }
         short ChunkWorldSize { get; }

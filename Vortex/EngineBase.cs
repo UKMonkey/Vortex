@@ -24,6 +24,7 @@ using Vortex.Interface.World.Triggers;
 using Vortex.Net;
 using Vortex.Net.Messages;
 using Vortex.World;
+using Vortex.World.Chunks;
 using Vortex.World.Movement;
 using Vortex.Interface.World.Blocks;
 
@@ -58,6 +59,7 @@ namespace Vortex
         private IBlockTypeCache _blockTypeCache;
         public virtual IBlockTypeCache BlockTypeCache { get { return _blockTypeCache; } }
         public short ChunkWorldSize { get; protected set; }
+        public IChunkFactory ChunkFactory { get; private set; }
 
         protected EngineBase(StartArguments args)
         {
@@ -73,6 +75,7 @@ namespace Vortex
             SpawnTests = new Dictionary<short, List<SpawnTest>>();
             MaterialCache = new MaterialCache();
             CompiledModelCache = new CompiledModelCache(new MaterialTranslator(MaterialCache), MaterialCache);
+            ChunkFactory = new ChunkFactory();
             
             _remotePlayerCache = new RemotePlayerCache();
             _audioLookup = new AudioLookup();
@@ -375,7 +378,7 @@ namespace Vortex
         {
             var msgType = MsgIdFactory.GetMessageId(msg.GetType());
             var lidMsg = CreateNetworkMessage();
-            var msgStream = new OutgoingMessageStream(lidMsg);
+            var msgStream = new OutgoingMessageStream(this, lidMsg);
 
             msgStream.WriteByte(msgType);
             msg.Serialize(msgStream);

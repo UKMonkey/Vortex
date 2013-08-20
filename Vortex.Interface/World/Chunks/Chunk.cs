@@ -9,18 +9,6 @@ namespace Vortex.Interface.World.Chunks
     {
         public event SingleChunkCallback ChunkChanged;
 
-        // position
-        private short? _type;
-        public short Type
-        {
-            get 
-            {
-                if (_type == null)
-                    _type = ChunkFactory.GetInstance().GetChunkType(this);
-                return _type.Value;
-            }
-        }
-
         public ChunkKey Key { get; set; }
 
         // Static lights

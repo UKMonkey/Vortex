@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using SlimMath;
-using Vortex.Interface.EntityBase.Properties;
-using Psy.Core;
 using Vortex.Interface.EntityBase;
 using Vortex.Interface.Traits;
 using Vortex.Interface.World;

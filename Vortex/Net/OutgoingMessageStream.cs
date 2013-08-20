@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Lidgren.Network;
 using SlimMath;
+using Vortex.Interface;
 using Vortex.Interface.EntityBase;
-using Vortex.Interface.EntityBase.Properties;
 using Vortex.Interface.Net;
 using Vortex.Interface.Traits;
 using Vortex.Interface.World;
@@ -15,10 +14,12 @@ namespace Vortex.Net
     public class OutgoingMessageStream : IOutgoingMessageStream
     {
         private readonly NetOutgoingMessage _netOutgoingMessage;
+        private readonly IEngine _engine;
 
-        public OutgoingMessageStream(NetOutgoingMessage netOutgoingMessage)
+        public OutgoingMessageStream(IEngine engine, NetOutgoingMessage netOutgoingMessage)
         {
             _netOutgoingMessage = netOutgoingMessage;
+            _engine = engine;
         }
 
         public void Write(RemotePlayer remotePlayer)
@@ -226,8 +227,10 @@ namespace Vortex.Net
         public void Write(IChunk chunk)
         {
             Write(chunk.Key);
-            WriteInt16(chunk.Type);
+            var type = _engine.ChunkFactory.GetChunkType(chunk);
             var data = chunk.GetFullData();
+
+            WriteInt16(type);
             WriteBytes(data);
             Write(chunk.Lights);
         }

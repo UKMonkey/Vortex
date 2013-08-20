@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Vortex.Interface.World.Chunks;
 
-namespace Vortex.Interface.World.Chunks
+namespace Vortex.World.Chunks
 {
     // this probably shouldn't be in interface...
-    public class ChunkFactory
+    public class ChunkFactory : IChunkFactory
     {
-        private static readonly ChunkFactory Instance = new ChunkFactory();
-
         public const short InvalidType = -1;
 
         private readonly Dictionary<short, Type> _idToType = new Dictionary<short, Type>(); 
@@ -15,17 +14,12 @@ namespace Vortex.Interface.World.Chunks
         private short _lastId = 1;
 
 
-        public static ChunkFactory GetInstance()
+        public ChunkFactory()
         {
-            return Instance;
+            RegisterChunkType(typeof(Chunk));
         }
 
-        private ChunkFactory()
-        {
-            RegisterType(typeof (Chunk));
-        }
-
-        private void RegisterType(Type chunkType)
+        public void RegisterChunkType(Type chunkType)
         {
             _idToType[_lastId] = chunkType;
             _typeToId[chunkType] = _lastId;

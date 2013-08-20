@@ -107,6 +107,7 @@
     <Compile Include="PerformanceHud\BarGroup.cs" />
     <Compile Include="PerformanceHud\IBarChartValue.cs" />
     <Compile Include="ProximityTester.cs" />
+    <Compile Include="World\Chunks\ChunkFactory.cs" />
     <Compile Include="World\Chunks\Utils.cs" />
     <Compile Include="World\EntityMonitor\TestCache.cs" />
     <Compile Include="World\Movement\GroupHandler.cs" />
