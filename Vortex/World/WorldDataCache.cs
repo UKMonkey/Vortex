@@ -379,7 +379,7 @@ namespace Vortex.World
             OnEntitiesDeleted(entitiesDeleted);
         }
 
-        private List<Entity> DeleteExistingEntities(List<int> entities)
+        private List<Entity> DeleteExistingEntities(IEnumerable<int> entities)
         {
             var ret = _entityQuadTree.RemoveItems(entities).ToList();
 
@@ -658,7 +658,7 @@ namespace Vortex.World
 
         /** sends notifications to 'OnEntityLoaded' or 'OnEntityUpdated' for anything changed since last call.
          */
-        private void ProcessChangedEntities(ICollection<Entity> changedEntities)
+        private void ProcessChangedEntities(IEnumerable<Entity> changedEntities)
         {
             var updated = new HashSet<Entity>();
             var created = new HashSet<Entity>();
