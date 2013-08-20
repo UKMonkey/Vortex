@@ -41,7 +41,6 @@ namespace Vortex.Interface.World.Chunks
         {
             Key = key;
             Lights = lights.ToList();
-            LightCount = (short)Lights.Count();
         }
 
         public Chunk(ChunkKey key, ChunkMesh mesh, IEnumerable<ILight> lights)
