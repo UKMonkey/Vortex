@@ -231,11 +231,14 @@ namespace Vortex.World.Observable
                             Monitor.Wait(_workerThread);
                     }
 
-                    if (_workCount > 0)
+                    if (_workCount == 0)
+                        continue;
+
+                    lock (this)
                     {
                         _workCount = 0;
-                        PerformUpdate();
                     }
+                    PerformUpdate();
                 }
             }
             catch (ThreadAbortException)
