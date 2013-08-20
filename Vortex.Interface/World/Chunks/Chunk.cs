@@ -32,6 +32,10 @@ namespace Vortex.Interface.World.Chunks
         // what level is currently observed by the user
         public short LevelOfInterest { get; set; }
 
+        public Chunk()
+        {
+            Lights = new List<ILight>();
+        }
 
         protected Chunk(ChunkKey key, IEnumerable<ILight> lights)
         {
