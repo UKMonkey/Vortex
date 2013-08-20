@@ -72,7 +72,15 @@ namespace Vortex.Interface.World.Chunks
         {
             var byteStream = new MemoryStream(data);
             var newMesh = byteStream.ReadChunkMesh();
-            ChunkMesh.ReplaceContents(newMesh);
+            if (ChunkMesh != null)
+            {
+                ChunkMesh.ReplaceContents(newMesh);
+            }
+            else
+            {
+                ChunkMesh = newMesh;
+                ChunkMesh.ChunkMeshUpdated += MeshUpdated;
+            }
         }
     }
 }
