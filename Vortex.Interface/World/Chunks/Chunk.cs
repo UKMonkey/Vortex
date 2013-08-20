@@ -25,7 +25,6 @@ namespace Vortex.Interface.World.Chunks
 
         // Static lights
         public List<ILight> Lights { get; private set; }
-        public short LightCount { get; private set; }
 
         // for mesh based chunks
         public ChunkMesh ChunkMesh { get; private set; }
