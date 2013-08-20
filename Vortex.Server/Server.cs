@@ -317,7 +317,7 @@ namespace Vortex.Server
 
                 var pos = entity.GetPosition();
                 var distanceSqrd = (pos - new Vector3(0,0,pos.Z) - chunkCenter).LengthSquared;
-                if (maxDisSqrd > distanceSqrd)
+                if (maxDisSqrd <= distanceSqrd)
                     continue;
 
                 yield return player;
