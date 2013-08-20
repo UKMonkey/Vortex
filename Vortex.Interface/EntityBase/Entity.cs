@@ -24,7 +24,7 @@ namespace Vortex.Interface.EntityBase
     {
 #region Properties
 
-        private void UpdateCachedProperties(Trait property)
+        protected override void UpdateCachedProperties(Trait property)
         {
             switch (property.PropertyId)
             {
@@ -164,6 +164,7 @@ namespace Vortex.Interface.EntityBase
             Registered = false;
             _compiledModelCache = compiledModelCache;
             Model = new EntityModel(compiledModelCache);
+
             EntityTypeId = entityTypeId;
             EntityTypeName = entityTypeName;
             EntityId = 0;
