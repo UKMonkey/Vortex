@@ -232,36 +232,6 @@ namespace Vortex.Net
             return result;
         }
 
-        public ChunkMesh ReadChunkMesh()
-        {
-            var chunkMesh = new ChunkMesh();
-
-            var triangleCount = ReadInt32();
-            for (var i = 0; i < triangleCount; i++)
-            {
-                var material = ReadByte();
-                var v0 = ReadUint16();
-                var v1 = ReadUint16();
-                var v2 = ReadUint16();
-
-                var triangle = new ChunkMeshTriangle(material, v0, v1, v2, chunkMesh);
-                chunkMesh.Triangles.Add(triangle);
-            }
-
-            var vertexCount = ReadInt32();
-            for (var i = 0; i < vertexCount; i++)
-            {
-                var x = ReadFloat();
-                var y = ReadFloat();
-                var z = ReadFloat();
-
-                var vector = new Vector3(x, y, z);
-                chunkMesh.Vertices.Add(vector);
-            }
-
-            return chunkMesh;
-        }
-
         public IChunk ReadChunk()
         {
             var chunkKey = ReadChunkKey();

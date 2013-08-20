@@ -51,7 +51,7 @@ namespace Vortex.Interface.Serialisation
 
         public static void Write(this Stream stream, ChunkMesh chunkMesh)
         {
-            stream.Write(chunkMesh.Triangles.Count);
+            stream.Write((ushort)chunkMesh.Triangles.Count);
             foreach (var triangle in chunkMesh.Triangles)
             {
                 stream.Write((byte)triangle.Material);
@@ -61,12 +61,12 @@ namespace Vortex.Interface.Serialisation
             }
 
             // write out triangles
-            stream.Write(chunkMesh.Vertices.Count);
+            stream.Write((ushort)chunkMesh.Vertices.Count);
             foreach (var vector in chunkMesh.Vertices)
             {
-                stream.Write(vector.X);
-                stream.Write(vector.Y);
-                stream.Write(vector.Z);
+                stream.Write((float)vector.X);
+                stream.Write((float)vector.Y);
+                stream.Write((float)vector.Z);
             }
         }
         

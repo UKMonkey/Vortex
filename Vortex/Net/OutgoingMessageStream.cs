@@ -214,29 +214,6 @@ namespace Vortex.Net
             }
         }
 
-        public void Write(ChunkMesh chunkMesh)
-        {
-            // write out vectors
-            WriteInt32(chunkMesh.Triangles.Count);
-            foreach (var triangle in chunkMesh.Triangles)
-            {
-                Debug.Assert(triangle.Material < 255);
-                WriteByte((byte)triangle.Material);
-                WriteUInt16((ushort) triangle.Vertex0);
-                WriteUInt16((ushort) triangle.Vertex1);
-                WriteUInt16((ushort) triangle.Vertex2);
-            }
-
-            // write out triangles
-            WriteInt32(chunkMesh.Vertices.Count);
-            foreach (var vector in chunkMesh.Vertices)
-            {
-                WriteFloat(vector.X);
-                WriteFloat(vector.Y);
-                WriteFloat(vector.Z);
-            }
-        }
-
         public void Write(List<IChunk> chunks)
         {
             WriteByte((byte)chunks.Count);
@@ -250,7 +227,8 @@ namespace Vortex.Net
         {
             Write(chunk.Key);
             WriteInt16(chunk.Type);
-            WriteBytes(chunk.GetFullData());
+            var data = chunk.GetFullData();
+            WriteBytes(data);
             Write(chunk.Lights);
         }
 

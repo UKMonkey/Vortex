@@ -65,7 +65,7 @@ namespace Vortex.Interface.Serialisation
         {
             var chunkMesh = new ChunkMesh();
 
-            var triangleCount = stream.ReadInt();
+            var triangleCount = (ushort)stream.ReadShort();
             for (var i = 0; i < triangleCount; i++)
             {
                 var material = stream.ReadByte();
@@ -77,7 +77,7 @@ namespace Vortex.Interface.Serialisation
                 chunkMesh.Triangles.Add(triangle);
             }
 
-            var vertexCount = stream.ReadInt();
+            var vertexCount = (ushort)stream.ReadShort();
             for (var i = 0; i < vertexCount; i++)
             {
                 var x = stream.ReadFloat();
