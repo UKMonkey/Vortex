@@ -1,4 +1,5 @@
 ﻿using Psy.Graphics.Models;
+using System.Diagnostics;
 
 namespace Vortex.Interface.EntityBase
 {
@@ -15,7 +16,7 @@ namespace Vortex.Interface.EntityBase
         public void SetModel(string filename)
         {
             ModelInstance = _compiledModelCache.GetModel(filename);
-
+            Debug.Assert(ModelInstance != null);
             ModelInstance.RemoveSubModels();
         }
     }
