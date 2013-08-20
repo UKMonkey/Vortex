@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Vortex.Interface.Traits
 {
-    public class TraitCollection<TraitType> where TraitType: Trait
+    public abstract class TraitCollection<TraitType> where TraitType: Trait
     {
         public event TraitCallback OnTraitChanged;
 
@@ -84,9 +84,7 @@ namespace Vortex.Interface.Traits
             return _nonDefaultProperties.ContainsKey(propertyKey) || _defaultProperties.ContainsKey(propertyKey);
         }
 
-        protected void UpdateCachedProperties(Trait property)
-        {
-        }
+        protected abstract void UpdateCachedProperties(Trait property);
 
         public bool IsDirty()
         {
