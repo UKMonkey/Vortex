@@ -171,7 +171,9 @@ namespace Vortex.Server.World
                 Logger.Write(chunk.Key.X + ", " + chunk.Key.Y + ":", LoggerLevel.Trace);
 
                 var msg = new ServerChunkUpdatedMessage {Chunk = chunk};
-                var interestedParties = _engine.GetPlayersInterestedInChunk(chunk.Key);
+                var interestedParties = _engine.GetPlayersInterestedInChunk(chunk.Key).ToList();
+                if (interestedParties.Count == 0)
+                    continue;
                 _engine.SendMessageToClients(msg, interestedParties);
             }
         }
