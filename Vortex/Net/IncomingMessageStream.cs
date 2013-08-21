@@ -8,7 +8,6 @@ using Vortex.Interface.Net;
 using Vortex.Interface.Traits;
 using Vortex.Interface.World;
 using Vortex.Interface.World.Chunks;
-using Vortex.World.Chunks;
 
 namespace Vortex.Net
 {
