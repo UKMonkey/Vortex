@@ -28,9 +28,9 @@ namespace Vortex.Renderer.Weather
         private readonly Splash[] _splashes;
         private List<ChunkMeshTriangle> _outsideTriangles;
         private readonly GraphicsContext _graphicsContext;
-        private readonly IEngine _engine;
+        private readonly IClient _engine;
 
-        public RainRenderer(GraphicsContext graphicsContext, IObservableArea observableArea, MaterialCache materialCache, IEngine engine)
+        public RainRenderer(GraphicsContext graphicsContext, IObservableArea observableArea, MaterialCache materialCache, IClient engine)
         {
             _graphicsContext = graphicsContext;
             _observableArea = observableArea;

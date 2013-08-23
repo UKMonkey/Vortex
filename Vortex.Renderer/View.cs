@@ -38,7 +38,7 @@ namespace Vortex.Renderer
         private readonly EntityNameplateRenderer _entityNameplateRenderer;
         private readonly MaterialCache _materialCache;
         public EntityCollection EntityCollectionSystem { get; set; }
-        private readonly IEngine _engine;
+        private readonly IClient _engine;
 
 
         public float MinViewRange { get; set; }
@@ -72,7 +72,7 @@ namespace Vortex.Renderer
             }
         }
 
-        public View(GraphicsContext graphicsContext, MaterialCache materialCache, IEngine engine)
+        public View(GraphicsContext graphicsContext, MaterialCache materialCache, IClient engine)
         {
             MinViewRange = 0;
             ViewRange = 0;

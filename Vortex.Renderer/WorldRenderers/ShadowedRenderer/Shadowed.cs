@@ -11,7 +11,6 @@ using SlimMath;
 using Vortex.Interface;
 using Vortex.Interface.EntityBase;
 using Vortex.Interface.World;
-using Vortex.Interface.World.Chunks;
 using Vortex.Renderer.Camera;
 using Vortex.World.Observable;
 
@@ -92,8 +91,8 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
         private readonly ModelInstanceRenderer _modelInstanceRenderer;
         private Vector2 _bottomLeft;
 
-        public Shadowed(GraphicsContext graphicsContext, IObservableArea observableArea, MaterialCache materialCache, IEngine engine)
-            : base(observableArea)
+        public Shadowed(GraphicsContext graphicsContext, IObservableArea observableArea, MaterialCache materialCache, IClient engine)
+            : base(observableArea, engine)
         {
             _fx = graphicsContext.CreateEffect("omniShadow2.fx");
 
