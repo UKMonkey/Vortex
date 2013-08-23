@@ -110,6 +110,7 @@
     <Compile Include="World\ChunkBlocks.cs" />
     <Compile Include="World\ChunkMesh.cs" />
     <Compile Include="World\ChunkMeshTriangle.cs" />
+    <Compile Include="World\Chunks\BlockChunk.cs" />
     <Compile Include="World\Chunks\MeshOnlyChunk.cs" />
     <Compile Include="World\Chunks\ChunkKey.cs" />
     <Compile Include="World\Chunks\IChunk.cs" />

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Vortex.Interface.World.Blocks;
 using Vortex.Interface;
 using Vortex.Net.Messages;
@@ -11,12 +9,13 @@ namespace Vortex.Server.World.Blocks
 {
     public class BlockTypeCache: IBlockTypeCache
     {
-        private readonly Dictionary<short, BlockProperties> _blocks;
+        private readonly Dictionary<ushort, BlockProperties> _blocks;
         private readonly IServer _engine;
 
         public BlockTypeCache(IServer engine, IEnumerable<BlockProperties> blockProperties)
         {
-            _blocks = new Dictionary<short, BlockProperties>();
+            _blocks = new Dictionary<ushort, BlockProperties>();
+            _engine = engine;
             foreach (var blockdata in blockProperties)
             {
                 _blocks[blockdata.GetBlockId()] = blockdata;
@@ -25,7 +24,12 @@ namespace Vortex.Server.World.Blocks
             engine.RegisterMessageCallback(typeof(ClientGetBlockTypesMessage), HandleGetBlocksRequest);
         }
 
-        public BlockProperties GetBlockProperties(short id)
+        public void RegisterProperties(ushort id, BlockProperties props)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BlockProperties GetBlockProperties(ushort id)
         {
             if (_blocks.ContainsKey(id))
                 return _blocks[id];
