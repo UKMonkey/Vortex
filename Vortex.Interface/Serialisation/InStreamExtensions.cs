@@ -35,7 +35,7 @@ namespace Vortex.Interface.Serialisation
 
             var chunk = engine.ChunkFactory.GetChunk(type);
             chunk.Key = key;
-            chunk.ApplyData(data);
+            chunk.ApplyFullData(data);
             chunk.Lights.AddRange(lights);
 
             return chunk;

@@ -239,7 +239,7 @@ namespace Vortex.Net
             var lights = ReadLights();
 
             var chunk = _engine.ChunkFactory.GetChunk(type);
-            chunk.ApplyData(data);
+            chunk.ApplyFullData(data);
             chunk.Lights.AddRange(lights);
             chunk.Key = chunkKey;
             return chunk;

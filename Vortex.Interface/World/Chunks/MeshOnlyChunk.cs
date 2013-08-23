@@ -10,8 +10,6 @@ namespace Vortex.Interface.World.Chunks
         public event SingleChunkCallback ChunkChanged;
 
         public ChunkKey Key { get; set; }
-
-        // Static lights
         public List<ILight> Lights { get; private set; }
 
         // for mesh based chunks
@@ -51,12 +49,7 @@ namespace Vortex.Interface.World.Chunks
             return byteStream.ToArray();
         }
 
-        public byte[] GetDirtyData()
-        {
-            return GetFullData();
-        }
-
-        public void ApplyData(byte[] data)
+        public void ApplyFullData(byte[] data)
         {
             var byteStream = new MemoryStream(data);
             var newMesh = byteStream.ReadChunkMesh();
@@ -69,6 +62,16 @@ namespace Vortex.Interface.World.Chunks
                 ChunkMesh = newMesh;
                 ChunkMesh.ChunkMeshUpdated += MeshUpdated;
             }
+        }
+
+        public byte[] GetDirtyData()
+        {
+            return GetFullData();
+        }
+
+        public void ApplyDirtyData(byte[] data)
+        {
+            ApplyFullData(data);
         }
     }
 }

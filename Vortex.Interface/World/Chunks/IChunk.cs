@@ -38,6 +38,12 @@ namespace Vortex.Interface.World.Chunks
         byte[] GetFullData();
 
         /// <summary>
+        /// Used to apply data returned by GetFullData
+        /// </summary>
+        /// <param name="data"></param>
+        void ApplyFullData(byte[] data);
+
+        /// <summary>
         /// Gets the smallest amount of data that when applied ontop of the last update
         /// will get to this item.  This may be the full data, or a tiny amount.
         /// </summary>
@@ -45,9 +51,10 @@ namespace Vortex.Interface.World.Chunks
         byte[] GetDirtyData();
 
         /// <summary>
-        /// Used to apply either/both the full and dirty data.
+        /// Used to apply dirty data.
         /// </summary>
         /// <param name="data"></param>
-        void ApplyData(byte[] data);
+        void ApplyDirtyData(byte[] data);
+
     }
 }
