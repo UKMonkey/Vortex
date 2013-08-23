@@ -14,6 +14,16 @@ namespace Vortex.Interface.World.Chunks
         public ChunkKey Key { get; set; }
         public List<ILight> Lights { get; private set; }
 
+        public ChunkMesh ChunkMesh
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public short LevelOfInterest
+        {
+            set { throw new NotImplementedException(); }
+        }
+
         private readonly Dictionary<int, ChunkMesh> _interestToMesh;
         private ushort[][,] _blocks;
 
@@ -115,6 +125,11 @@ namespace Vortex.Interface.World.Chunks
             }
 
             return stream.ToArray();
+        }
+
+        public void ApplyData(byte[] data)
+        {
+            throw new NotImplementedException();
         }
 
         public void ApplyDirtyData(byte[] data)
