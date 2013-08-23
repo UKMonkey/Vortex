@@ -4,7 +4,6 @@ using System.Linq;
 using Psy.Core;
 using SlimMath;
 using Vortex.Interface;
-using Vortex.Interface.EntityBase.Properties;
 using Psy.Core.Console;
 using Psy.Graphics;
 using Vortex.Interface.EntityBase;

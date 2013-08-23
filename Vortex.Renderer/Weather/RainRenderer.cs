@@ -128,7 +128,6 @@ namespace Vortex.Renderer.Weather
         private void ResetRainDroplet(int index, Vector3 viewPosition)
         {
             var dropletPosition = _droplets[index].Position;
-
             var randomTriangle = GetRandomOutsideTriangle();
 
             if (randomTriangle == null)
