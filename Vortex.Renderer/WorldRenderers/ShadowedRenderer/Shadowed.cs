@@ -394,7 +394,6 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
 
         private void RenderDepth(IEffect fx, Vector3 lightPos, ILight light)
         {
-
             var depthPassStart = Timer.GetTime();
 
             _graphicsContext.SingleChannelColourWrite = true;
@@ -436,7 +435,6 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
         private void DepthPass(Vector3 lightPos, ILight light, IEffect fx, CubeMapFaceEnum face)
         {
             var lightDistance = Math.Pow(light.Brightness, 4);
-
             var a = Timer.GetTime();
 
             _graphicsContext.RenderTarget = _cubeTexture.CubeMapSurface[(int) face];
@@ -472,9 +470,7 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
             foreach (var entity in _entityList)
             {
                 var v = Timer.GetTime();
-
                 var entityPosition = entity.GetPosition();
-
                 var distance = entityPosition.DistanceSquared(light.Position);
 
                 if (distance > lightDistance)
@@ -512,13 +508,9 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
                 }
 
                 var w = Timer.GetTime();
-
                 var world = MatrixHelper.GetEntityWorldMatrix(_currentCamera, entity);
-
                 var x = Timer.GetTime();
-
                 var matrix = world * cameraViewMatrix * _lightCameraProj;
-
                 var y = Timer.GetTime();
 
                 fx.SetMatrix(_worldMatHandle, world);
@@ -782,9 +774,7 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
             var triangleCount = materialBatch.Value.Count;
 
             var renderer = _graphicsContext.CreateVertexRenderer<ColouredTexturedVertexNormal4>(triangleCount*3);
-
             var dataStream = renderer.LockVertexBuffer();
-
             var observableAreaBottomLeft = ObservableArea.BottomLeft.AsVector3();
 
             foreach (var triangleKey in materialBatch.Value)
