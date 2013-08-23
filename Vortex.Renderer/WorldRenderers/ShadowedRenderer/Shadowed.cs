@@ -745,9 +745,14 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
         private Dictionary<int, List<TriangleKey>> CreateMaterialBatches()
         {
             var materialBatch = new Dictionary<int, List<TriangleKey>>(DefaultMaterialListLength);
-            for (var meshIdx = 0; meshIdx < ObservableArea.ChunkMeshes.Count; meshIdx++)
+            if (!ObservableArea.ChunkMeshes.ContainsKey(LevelOfInterest))
+                return materialBatch;
+
+            var chunkMeshes = ObservableArea.ChunkMeshes[LevelOfInterest];
+
+            for (var meshIdx = 0; meshIdx < chunkMeshes.Count; meshIdx++)
             {
-                var chunkMesh = ObservableArea.ChunkMeshes[meshIdx];
+                var chunkMesh = chunkMeshes[meshIdx];
 
                 for (var triIdx = 0; triIdx < chunkMesh.Triangles.Count; triIdx++)
                 {
@@ -778,7 +783,7 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
 
             foreach (var triangleKey in materialBatch.Value)
             {
-                var chunkMesh = ObservableArea.ChunkMeshes[triangleKey.ChunkMeshIndex];
+                var chunkMesh = ObservableArea.ChunkMeshes[LevelOfInterest][triangleKey.ChunkMeshIndex];
                 var triangle = chunkMesh.Triangles[triangleKey.TriangleIndex];
                 var offset = chunkMesh.WorldVector - observableAreaBottomLeft;
 

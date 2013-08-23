@@ -29,10 +29,9 @@ namespace Vortex.Interface.World.Chunks
             : this(key, lights)
         {
             ChunkMesh = mesh;
-            ChunkMesh.ChunkMeshUpdated += MeshUpdated;
         }
 
-        private void MeshUpdated(ChunkMesh mesh)
+        private void HandleChunkChanged()
         {
             if (ChunkChanged != null)
                 ChunkChanged(this);
@@ -63,16 +62,8 @@ namespace Vortex.Interface.World.Chunks
         public void ApplyFullData(byte[] data)
         {
             var byteStream = new MemoryStream(data);
-            var newMesh = byteStream.ReadChunkMesh();
-            if (ChunkMesh != null)
-            {
-                ChunkMesh.ReplaceContents(newMesh);
-            }
-            else
-            {
-                ChunkMesh = newMesh;
-                ChunkMesh.ChunkMeshUpdated += MeshUpdated;
-            }
+            ChunkMesh = byteStream.ReadChunkMesh();
+            HandleChunkChanged();
         }
 
         public byte[] GetDirtyData()

@@ -48,8 +48,8 @@ namespace Vortex.World.Observable
         private volatile List<List<ChunkKey>> _keysGridA;
         private volatile List<List<ChunkKey>> _keysGridB;
 
-        private volatile List<ChunkMesh> _meshesA;
-        private volatile List<ChunkMesh> _meshesB;
+        private volatile Dictionary<int, List<ChunkMesh>> _meshesA;
+        private volatile Dictionary<int, List<ChunkMesh>> _meshesB;
 
         public IOutsideLightingColour OutsideLightingColour { get; private set; }
 
@@ -79,8 +79,8 @@ namespace Vortex.World.Observable
         public List<List<ChunkKey>> ChunksObservedBuffer  { get { return _bufferState ? _keysGridB : _keysGridA; } }
 
         // what should these be now?
-        public List<ChunkMesh> ChunkMeshes             { get { return _bufferState ? _meshesA : _meshesB; } }
-        public List<ChunkMesh> ChunkMeshesBuffer       { get { return _bufferState ? _meshesB : _meshesA; } }
+        public Dictionary<int, List<ChunkMesh>> ChunkMeshes       { get { return _bufferState ? _meshesA : _meshesB; } }
+        public Dictionary<int, List<ChunkMesh>> ChunkMeshesBuffer { get { return _bufferState ? _meshesB : _meshesA; } }
 
         public HashSet<ChunkKey> ChunksObservedExtended       { get { return _bufferState ? _observedChunksExtendedB : _observedChunksExtendedA; } }
         public HashSet<ChunkKey> ChunksObservedExtendedBuffer { get { return _bufferState ? _observedChunksExtendedA : _observedChunksExtendedB; } }
@@ -173,8 +173,8 @@ namespace Vortex.World.Observable
             _lightsA = new List<ILight>();
             _lightsB = new List<ILight>();
 
-            _meshesA = new List<ChunkMesh>();
-            _meshesB = new List<ChunkMesh>();
+            _meshesA = new Dictionary<int, List<ChunkMesh>>();
+            _meshesB = new Dictionary<int, List<ChunkMesh>>();
 
             _keysGridA = new List<List<ChunkKey>>();
             _keysGridB = new List<List<ChunkKey>>();

@@ -107,8 +107,10 @@ namespace Vortex.Renderer.Weather
         {
             _outsideTriangles = new List<ChunkMeshTriangle>(10);
             var maxRange = _engine.ChunkWorldSize * 1.5f;
+            if (!_observableArea.ChunkMeshes.ContainsKey(LevelOfInterest))
+                return;
 
-            foreach (var chunkMesh in _observableArea.ChunkMeshes)
+            foreach (var chunkMesh in _observableArea.ChunkMeshes[LevelOfInterest])
             {
                 if ((chunkMesh.WorldVector.Translate(_engine.ChunkWorldSize / 2.0f, _engine.ChunkWorldSize / 2.0f, 0))
                     .DistanceSquared(_observableArea.Middle.AsVector3()) > (maxRange * maxRange))

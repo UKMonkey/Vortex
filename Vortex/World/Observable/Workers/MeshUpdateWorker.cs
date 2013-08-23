@@ -1,5 +1,5 @@
-﻿using System.Linq;
-﻿using System.Collections.Generic;
+using System.Linq;
+using System.Collections.Generic;
 using Vortex.Interface;
 using Vortex.Interface.Debugging;
 using Vortex.Interface.World;
@@ -43,7 +43,10 @@ namespace Vortex.World.Observable.Workers
                 foreach (var meshPair in meshes)
                 {
                     meshPair.Value.WorldVector = _engine.GetChunkWorldVectorWithOffset(chunk.Key);
-                    meshBuffer.Add(meshPair.Value);
+                    if (!meshBuffer.ContainsKey(meshPair.Key))
+                        meshBuffer[meshPair.Key] = new List<ChunkMesh>();
+
+                    meshBuffer[meshPair.Key].Add(meshPair.Value);
                 }
             }
             ret.CompletedTask("Adding data");

@@ -61,13 +61,13 @@ namespace Vortex.World.Observable
         /// Primary Tile buffer
         /// not maintained by the observable area
         /// </summary>
-        List<ChunkMesh> ChunkMeshes { get; }
+        Dictionary<int, List<ChunkMesh>> ChunkMeshes { get; }
 
         /// <summary>
         /// Tiles for use by lighting etc - will be swapped to be 'Tiles' at a later date
         /// not maintained by the observable area
         /// </summary>
-        List<ChunkMesh> ChunkMeshesBuffer { get; }
+        Dictionary<int, List<ChunkMesh>> ChunkMeshesBuffer { get; }
 
         /// <summary>
         /// Primary Collision mesh tester
