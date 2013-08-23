@@ -32,9 +32,9 @@ namespace Vortex.World
         private readonly WorldDataCache _cache;
         private readonly IMovementHandler _movementHandler;
         private readonly Dictionary<Entity, TestCache> _visableEntities;
+        private readonly IEngine _engine;
 
         private IMap _map;
-        private IEngine _engine;
 
         public bool IsRaining { get; set; }
         public Color4 OutsideLightingColour { get; set; }
