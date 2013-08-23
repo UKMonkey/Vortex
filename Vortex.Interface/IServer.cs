@@ -11,6 +11,7 @@ namespace Vortex.Interface
         float ObservedSize { get; }
 
         IConsoleCommandContext ConsoleCommandContext { get; }
+        IMapGeometry MapGeometry { get; }
 
         /// <summary>
         /// Returns the entity controlled by the current remote player.

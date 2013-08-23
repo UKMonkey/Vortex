@@ -30,6 +30,10 @@ namespace Vortex.Server
         private readonly int _frameSyncRate;
         public float ObservedSize { get { return Map.MaximumObservableAreaSize; } }
 
+        // a system for the game to be able to play with the map
+        // changes to it on the server should be sent to the clients automatically by the engine
+        public IMapGeometry MapGeometry { get { return World.GetMap(); } }
+
         public IConsoleCommandContext ConsoleCommandContext { get { return _consoleCommandContext; } }
         public ConsoleCommandContext GetConsoleCommandContext()
         {

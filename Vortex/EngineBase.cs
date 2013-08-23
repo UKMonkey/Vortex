@@ -409,7 +409,6 @@ namespace Vortex
         /***********************************************/
 
         public World.World World { get; private set; }
-        public IMapGeometry MapGeometry { get { return World.GetMap(); } }
 
         protected Map Map { get; private set; }
         public WorldDataCache DataCache { get; private set; }

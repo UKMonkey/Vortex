@@ -38,7 +38,6 @@ namespace Vortex.Interface
         NetworkStatus NetworkStatus { get; }
         MaterialCache MaterialCache { get; }
         CompiledModelCache CompiledModelCache { get; }
-        IMapGeometry MapGeometry { get; }
 
         IAudioLookup AudioLookup { get; }
 
