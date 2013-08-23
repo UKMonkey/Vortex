@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+﻿using System.Collections.Generic;
 using Vortex.Interface;
 using Vortex.Interface.Debugging;
+using Vortex.Interface.World;
 using Vortex.Interface.World.Chunks;
 using Vortex.World.Chunks;
 
@@ -34,10 +36,15 @@ namespace Vortex.World.Observable.Workers
 
             ret.StartingTask("Adding data");
             meshBuffer.Clear();
+
             foreach (var chunk in chunks)
             {
-                chunk.ChunkMesh.WorldVector = _engine.GetChunkWorldVectorWithOffset(chunk.Key);
-                meshBuffer.Add(chunk.ChunkMesh);
+                var meshes = chunk.GetChunkMeshes();
+                foreach (var meshPair in meshes)
+                {
+                    meshPair.Value.WorldVector = _engine.GetChunkWorldVectorWithOffset(chunk.Key);
+                    meshBuffer.Add(meshPair.Value);
+                }
             }
             ret.CompletedTask("Adding data");
 

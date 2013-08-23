@@ -12,11 +12,7 @@ namespace Vortex.Interface.World.Chunks
         public ChunkKey Key { get; set; }
         public List<ILight> Lights { get; private set; }
 
-        // for mesh based chunks
-        public ChunkMesh ChunkMesh { get; private set; }
-
-        // what level is currently observed by the user
-        public short LevelOfInterest { get; set; }
+        private ChunkMesh ChunkMesh { get; set; }
 
         public MeshOnlyChunk()
         {
@@ -40,6 +36,21 @@ namespace Vortex.Interface.World.Chunks
         {
             if (ChunkChanged != null)
                 ChunkChanged(this);
+        }
+
+        // do nothing - the mesh has already been calculated
+        public void RecalculateMesh(IEngine engine)
+        {
+        }
+
+        public ChunkMesh GetChunkMesh(int levelOfInterest)
+        {
+            return ChunkMesh;
+        }
+
+        public IEnumerable<KeyValuePair<int, ChunkMesh>> GetChunkMeshes()
+        {
+            yield return new KeyValuePair<int, ChunkMesh>(0, ChunkMesh);
         }
 
         public byte[] GetFullData()

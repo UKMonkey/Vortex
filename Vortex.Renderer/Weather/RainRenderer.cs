@@ -8,7 +8,6 @@ using Psy.Graphics.Effects;
 using Psy.Graphics.VertexDeclarations;
 using Vortex.Interface;
 using Vortex.Interface.World;
-using Vortex.Interface.World.Chunks;
 using Vortex.World.Observable;
 using PrimitiveType = Psy.Graphics.PrimitiveType;
 using Vector3 = SlimMath.Vector3;
@@ -17,6 +16,8 @@ namespace Vortex.Renderer.Weather
 {
     public class RainRenderer : IDisposable
     {
+        private int LevelOfInterest { get { return _engine.LevelOfInterest; } }
+
         private readonly IObservableArea _observableArea;
         private readonly MaterialCache _materialCache;
         private const int DropletCount = 512;

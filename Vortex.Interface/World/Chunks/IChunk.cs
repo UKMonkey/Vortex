@@ -19,19 +19,6 @@ namespace Vortex.Interface.World.Chunks
         List<ILight> Lights { get; }
 
         /// <summary>
-        /// How this chunk should be drawn for the given level of interest
-        /// </summary>
-        ChunkMesh ChunkMesh { get; }
-
-        /// <summary>
-        /// In the case where there are multiple levels, this
-        /// sets which we're interested in.  The Chunk may decide
-        /// to provide a mesh that covers MORE than just this level, but that's
-        /// for the chunk to decide how it wants to be drawn
-        /// </summary>
-        short LevelOfInterest { set; }
-
-        /// <summary>
         /// Returns the full details of what this chunk contains (ignoring lights)
         /// </summary>
         /// <returns></returns>
@@ -56,5 +43,27 @@ namespace Vortex.Interface.World.Chunks
         /// <param name="data"></param>
         void ApplyDirtyData(byte[] data);
 
+        /// <summary>
+        /// get the chunk to re-establish the mesh.
+        /// the chunk MUST NOT recalculate the mesh if it's changed
+        /// if it's changed, it should use the event to notify the rest of the engine
+        /// and then the engine will decide if the mesh should be re-calculated or not
+        /// (If the mesh has already been updated, and that was the change then it's assumed
+        /// this function will do nothing)
+        /// </summary>
+        /// <param name="engine"></param>
+        void RecalculateMesh(IEngine engine);
+
+        /// <summary>
+        /// If the chunk wishes to be displayed differently depending on the 'level of interest'
+        /// then it can choose how to do so here.
+        /// </summary>
+        ChunkMesh GetChunkMesh(int levelOfInterest);
+
+        /// <summary>
+        /// pulls out all of the meshes with their level of interest
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<KeyValuePair<int, ChunkMesh>> GetChunkMeshes();
     }
 }
