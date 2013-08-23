@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Psy.Core.Collision;
 using SlimMath;
+using Vortex.Interface.World.Chunks;
 
 namespace Vortex.Interface
 {
@@ -30,5 +31,12 @@ namespace Vortex.Interface
         /// <param name="additionalTargets"></param>
         /// <returns></returns>
         CollisionResult TestMapCollision(Vector3 from, Vector3 direction, IEnumerable<Mesh> additionalTargets);
+
+        /// <summary>
+        /// provides the chunk for the given key.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        IChunk GetChunk(ChunkKey key);
     }
 }

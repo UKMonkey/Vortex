@@ -110,6 +110,11 @@ namespace Vortex.World
             return tester.CollideWithRay(from, direction).RayCollisionResult;
         }
 
+        public IChunk GetChunk(ChunkKey key)
+        {
+            return _dataCache.GetChunks(new List<ChunkKey>{key}).FirstOrDefault();
+        }
+
         public IObservableArea AddCamera(ICamera camera)
         {
             if (_observableAreas.ContainsKey(camera))
