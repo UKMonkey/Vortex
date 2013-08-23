@@ -43,10 +43,10 @@ namespace Vortex.Client
         public TimeLine LatencyTimeline { get; private set; }
         public int LastKnownLatency 
         { get { return (int)LatencyTimeline.SamplePoints.LastOrDefault(); } }
-        
 
         public uint LastKnownServerFrameNumber { get; private set; }
         public int TargetFrameLagAmount { get { return 10; } }
+        public int LevelOfInterest { get; set; }
 
         public IAudioEngine AudioEngine { get; private set; }
         public XmlLoader GuiLoader { get; private set; }

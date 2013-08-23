@@ -9,6 +9,7 @@ namespace Vortex.Interface
 {
     public interface IClient : IEngine
     {
+        int LevelOfInterest { get; set; }
         int LastKnownLatency { get; }
         uint LastKnownServerFrameNumber { get; }
         int TargetFrameLagAmount { get; }
