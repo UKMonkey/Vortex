@@ -27,6 +27,9 @@ namespace Vortex.Interface
         int SynchronizeFrequency { get; }
         uint CurrentFrameNumber { get; }
 
+        /******************************************
+         * World information
+         *****************************************/
         ITimeOfDayProvider TimeOfDayProvider { get; }
         IChunkFactory ChunkFactory { get; }
         
