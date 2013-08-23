@@ -14,13 +14,13 @@
         /************************************************************************/
         /* Block id                                                             */
         /************************************************************************/
-        public static short GetBlockId(this BlockProperties props)
+        public static ushort GetBlockId(this BlockProperties props)
         {
             var trait = props.GetProperty(BlockPropertyEnum.BockId);
-            return trait.ShortValue;
+            return (ushort)(trait.ShortValue);
         }
 
-        public static void SetBlockId(this BlockProperties props, short id)
+        public static void SetBlockId(this BlockProperties props, ushort id)
         {
             var tmp = new BlockProperty((short)BlockPropertyEnum.BockId, id);
             props.SetProperty(tmp);
