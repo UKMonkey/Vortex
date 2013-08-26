@@ -25,5 +25,14 @@
             var tmp = new BlockProperty((short)BlockPropertyEnum.BockId, id);
             props.SetProperty(tmp);
         }
+
+        /************************************************************************/
+        /* Material                                                             */
+        /************************************************************************/
+        public static void SetMaterial(this BlockProperties props, int material)
+        {
+            var tmp = new BlockProperty((short) BlockPropertyEnum.MaterialId, material);
+            props.SetProperty(tmp);
+        }
     }
 }
