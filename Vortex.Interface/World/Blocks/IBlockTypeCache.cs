@@ -8,7 +8,7 @@
         /// </summary>
         /// <param name="id"></param>
         /// <param name="props"></param>
-        void RegisterProperties(ushort id, BlockProperties props);
+        void RegisterProperties(BlockProperties props);
 
         /// <summary>
         /// get the properties for a given type of block

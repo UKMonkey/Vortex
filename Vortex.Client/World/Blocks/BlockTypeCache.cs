@@ -9,10 +9,9 @@ namespace Vortex.Client.World.Blocks
 {
     public class BlockTypeCache : IBlockTypeCache
     {
-        private Dictionary<ushort, BlockProperties> _blocks;
-        private bool _dataRequested = false;
-        private BlockProperties _default;
-        private IClient _engine;
+        private readonly Dictionary<ushort, BlockProperties> _blocks;
+        private readonly BlockProperties _default;
+        private readonly IClient _engine;
 
         public BlockTypeCache(IClient engine, BlockProperties defaultBlock)
         {
@@ -20,10 +19,14 @@ namespace Vortex.Client.World.Blocks
             
             _engine.RegisterMessageCallback(typeof(ServerBlockDataMessage), HandleNewBlockMessage);
             _default = defaultBlock;
+            _blocks = new Dictionary<ushort, BlockProperties>();
+            _engine.SendMessage(new ClientGetBlockTypesMessage());
         }
 
-        public void RegisterProperties(ushort id, BlockProperties props)
+        public void RegisterProperties(BlockProperties props)
         {
+            // client isn't allowed to register its own properties
+            // it must get them from the server
             throw new NotImplementedException();
         }
 
@@ -31,9 +34,6 @@ namespace Vortex.Client.World.Blocks
         {
             if (_blocks.ContainsKey(id))
                 return _blocks[id];
-
-            if (!_dataRequested)
-                _engine.SendMessage(new ClientGetBlockTypesMessage());
 
             return _default;
         }

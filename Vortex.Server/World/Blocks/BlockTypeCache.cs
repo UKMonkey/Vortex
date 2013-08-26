@@ -24,9 +24,10 @@ namespace Vortex.Server.World.Blocks
             engine.RegisterMessageCallback(typeof(ClientGetBlockTypesMessage), HandleGetBlocksRequest);
         }
 
-        public void RegisterProperties(ushort id, BlockProperties props)
+        public void RegisterProperties(BlockProperties props)
         {
-            throw new NotImplementedException();
+            var id = props.GetBlockId();
+            _blocks[id] = props;
         }
 
         public BlockProperties GetBlockProperties(ushort id)
