@@ -160,8 +160,6 @@ namespace Vortex.World
         {
             foreach (var changedChunk in chunks)
             {
-                foreach (var chunk in changedChunk.GetChunkMeshes())
-                    chunk.Value.Compress();
                 Logger.Write(string.Format("Chunk {0},{1} generated", changedChunk.Key.X, changedChunk.Key.Y), LoggerLevel.Trace, LogLocation);
             }
              
@@ -520,6 +518,11 @@ namespace Vortex.World
             foreach (var chunk in changedChunks)
             {
                 _chunkCache[chunk.Key] = chunk;
+                chunk.RecalculateMesh(_engine);
+                foreach (var meshPair in chunk.GetChunkMeshes())
+                {
+                    meshPair.Value.Compress();
+                }
             }
 
             if (isNew)
