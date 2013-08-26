@@ -248,6 +248,7 @@ namespace Vortex.Server
             Game = module;
             Game.OnBegin();
             ChunkWorldSize = Game.GetChunkWorldSize();
+            BlockTypeCache = GetBlockTypeCache();
         }
 
         protected override WorldDataCache GetCachingStrategy()

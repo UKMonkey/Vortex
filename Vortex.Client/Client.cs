@@ -555,6 +555,7 @@ namespace Vortex.Client
                             case NetConnectionStatus.Connected:
                                 Game.OnNetworkStatusChanged(NetworkStatus.Connected);
                                 NetworkStatus = NetworkStatus.Connected;
+                                BlockTypeCache = GetBlockTypeCache();
                                 break;
                             case NetConnectionStatus.Disconnected:
                                 Logger.Write("Disconnect message recieved");

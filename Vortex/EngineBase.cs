@@ -56,8 +56,7 @@ namespace Vortex
         public IEnumerable<RemotePlayer> ConnectedClients{get { return RemotePlayers.GetPlayers(); }}
         public virtual IConsole Console { get { return null; } }
 
-        private IBlockTypeCache _blockTypeCache;
-        public virtual IBlockTypeCache BlockTypeCache { get { return _blockTypeCache; } }
+        public virtual IBlockTypeCache BlockTypeCache { get; protected set; }
         public short ChunkWorldSize { get; protected set; }
         public IChunkFactory ChunkFactory { get; private set; }
 
@@ -101,7 +100,6 @@ namespace Vortex
 
             MsgIdFactory = new MessageIdFactory();
             StaticTriggerFactory.Instance = new TriggerFactory(this);
-            _blockTypeCache = GetBlockTypeCache();
         }
 
         /***********************************************/
