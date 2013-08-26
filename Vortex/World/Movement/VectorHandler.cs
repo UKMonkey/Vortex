@@ -75,12 +75,16 @@ namespace Vortex.World.Movement
         public override bool HandleEntityMovement(Entity item)
         {
             var movementVector = item.GetMovementVector();
-
             var movementSpeed = movementVector.Length;
 
-            var nearbyEntities = World.GetEntitiesWithinArea(item.GetPosition(), item.Radius + movementSpeed)
-                .Where(entity => entity.GetSolid() && item.EntityId != entity.EntityId)
-                .Where(entity => entity.Mesh != null);
+            IEnumerable<Entity> nearbyEntities = new List<Entity>();
+
+            if (item.GetSolid())
+            {
+                nearbyEntities = World.GetEntitiesWithinArea(item.GetPosition(), item.Radius + movementSpeed)
+                    .Where(entity => entity.GetSolid() && item.EntityId != entity.EntityId)
+                    .Where(entity => entity.Mesh != null);
+            }
 
             return MoveEntity(item, nearbyEntities, movementVector);
         }

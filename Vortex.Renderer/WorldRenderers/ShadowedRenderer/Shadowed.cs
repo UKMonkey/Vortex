@@ -570,7 +570,7 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
 
             foreach (var entity in _entityList)
             {
-                if (entity.Model == null)
+                if (entity.Model == null || entity.Model.ModelInstance == null)
                     continue;
 
                 var distanceFromCamera = entity.GetPosition().DistanceSquared(_currentCamera.Vector);

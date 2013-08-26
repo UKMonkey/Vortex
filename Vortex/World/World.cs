@@ -187,6 +187,9 @@ namespace Vortex.World
             if (entity.PendingDestruction)
                 return;
 
+            if (!entity.GetSolid())
+                return;
+
             var entities = _cache.GetEntitiesInRange(entity.GetPosition(), entity.Radius);
 
             foreach (var otherEntity in entities)

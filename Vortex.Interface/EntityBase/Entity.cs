@@ -285,6 +285,9 @@ namespace Vortex.Interface.EntityBase
 
         public void UpdateAnimation()
         {
+            if (Model.ModelInstance == null)
+                return;
+
             if (this.GetMovementVector().Length > 0.01f)
             {
                 Model.ModelInstance.RunAnimation(AnimationType.Walking, true);
