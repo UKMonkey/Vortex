@@ -178,7 +178,7 @@ namespace Vortex.Client
 
         private void Update()
         {
-            if (Me != null)
+            if (Me != null && Me.GetSolid())
             {
                 EngineWindow.View.ViewAngle = Me.GetViewAngleRange();
                 EngineWindow.View.MinViewRange = Me.GetMeleeViewRange();
