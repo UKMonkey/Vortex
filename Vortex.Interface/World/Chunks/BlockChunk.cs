@@ -71,6 +71,7 @@ namespace Vortex.Interface.World.Chunks
 
             var index = GetBlockIndex(x, y, z);
             _blocks[z][y,x] = type;
+            _interestToMesh.Remove(z);
             
             if (ChunkChanged != null)
             {
@@ -182,7 +183,7 @@ namespace Vortex.Interface.World.Chunks
         {
             for (var z = 0; z < ZSize; ++z)
             {
-                if (_interestToMesh[z] != null)
+                if (_interestToMesh.ContainsKey(z))
                     continue;
 
                 var area = _blocks[z];
