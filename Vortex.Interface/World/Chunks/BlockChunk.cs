@@ -14,26 +14,16 @@ namespace Vortex.Interface.World.Chunks
         public ChunkKey Key { get; set; }
         public List<ILight> Lights { get; private set; }
 
-        public ChunkMesh ChunkMesh
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public short LevelOfInterest
-        {
-            set { throw new NotImplementedException(); }
-        }
-
         private readonly Dictionary<int, ChunkMesh> _interestToMesh;
         private ushort[][,] _blocks;
 
-        private short _xSize;
-        private short _ySize;
-        private short _zSize;
+        private short XSize { get; set; }
+        private short YSize { get; set; }
+        private short ZSize { get; set; }
 
         private int XMultiplier { get { return 1; } }
-        private int YMultiplier { get { return _xSize; } }
-        private int ZMultiplier { get { return _xSize * _ySize; } }
+        private int YMultiplier { get { return XSize; } }
+        private int ZMultiplier { get { return XSize * YSize; } }
 
         private readonly List<ushort> _updatedBlocks;
 
@@ -47,13 +37,13 @@ namespace Vortex.Interface.World.Chunks
         public BlockChunk(IEngine engine, short depth)
             : this()
         {
-            _xSize = engine.ChunkWorldSize;
-            _ySize = engine.ChunkWorldSize;
-            _zSize = depth;
+            XSize = engine.ChunkWorldSize;
+            YSize = engine.ChunkWorldSize;
+            ZSize = depth;
 
-            _blocks = new ushort[_zSize][,];
-            for (var i = 0; i < _zSize; ++i)
-                _blocks[i] = new ushort[_xSize, _ySize];
+            _blocks = new ushort[ZSize][,];
+            for (var i = 0; i < ZSize; ++i)
+                _blocks[i] = new ushort[XSize, YSize];
         }
 
         public ushort[,] GetBlocksForLevel(ushort level)
@@ -81,18 +71,21 @@ namespace Vortex.Interface.World.Chunks
 
             var index = GetBlockIndex(x, y, z);
             _blocks[z][y,x] = type;
-            _updatedBlocks.Add((ushort)index);
-
-            ChunkChanged(this);
+            
+            if (ChunkChanged != null)
+            {
+                _updatedBlocks.Add((ushort)index);
+                ChunkChanged(this);
+            }
         }
 
         public byte[] GetFullData()
         {
             var stream = new MemoryStream();
 
-            stream.Write(_xSize);
-            stream.Write(_ySize);
-            stream.Write(_zSize);
+            stream.Write(XSize);
+            stream.Write(YSize);
+            stream.Write(ZSize);
             stream.Write(_blocks);
 
             return stream.ToArray();
@@ -102,13 +95,14 @@ namespace Vortex.Interface.World.Chunks
         {
             var stream = new MemoryStream(data);
 
-            _xSize = stream.ReadShort();
-            _ySize = stream.ReadShort();
-            _zSize = stream.ReadShort();
+            XSize = stream.ReadShort();
+            YSize = stream.ReadShort();
+            ZSize = stream.ReadShort();
 
             _blocks = stream.ReadUShortMap();
             _interestToMesh.Clear();
-            ChunkChanged(this);
+            if (ChunkChanged != null)
+                ChunkChanged(this);
         }
 
         public byte[] GetDirtyData()
@@ -125,11 +119,6 @@ namespace Vortex.Interface.World.Chunks
             }
 
             return stream.ToArray();
-        }
-
-        public void ApplyData(byte[] data)
-        {
-            throw new NotImplementedException();
         }
 
         public void ApplyDirtyData(byte[] data)
@@ -149,7 +138,8 @@ namespace Vortex.Interface.World.Chunks
                 _updatedBlocks.Add(index);
                 _interestToMesh.Remove(z);
             }
-            ChunkChanged(this);
+            if (ChunkChanged != null)
+                ChunkChanged(this);
         }
         
         public ChunkMesh GetChunkMesh(int levelOfInterest)
@@ -166,9 +156,9 @@ namespace Vortex.Interface.World.Chunks
         {
             var mesh = new ChunkMesh();
 
-            for (var y = 0; y < _ySize; ++y)
+            for (var y = 0; y < YSize; ++y)
             {
-                for (var x=0; x<_xSize; ++x)
+                for (var x=0; x<XSize; ++x)
                 {
                     var blockType = area[y, x];
                     var blockProperties = engine.BlockTypeCache.GetBlockProperties(blockType);
@@ -190,7 +180,7 @@ namespace Vortex.Interface.World.Chunks
         // in holes rather than leave them meshless
         public void RecalculateMesh(IEngine engine)
         {
-            for (var z = 0; z < _zSize; ++z)
+            for (var z = 0; z < ZSize; ++z)
             {
                 if (_interestToMesh[z] != null)
                     continue;
