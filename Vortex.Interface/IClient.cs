@@ -7,9 +7,16 @@ using Vortex.Interface.EntityBase;
 
 namespace Vortex.Interface
 {
+    public delegate void LevelOfInterestChangedHandler();
+
     public interface IClient : IEngine
     {
+        /****************************************************
+         * Level of interest (used by block type maps)
+         ***************************************************/
+        event LevelOfInterestChangedHandler OnLevelOfInterestChanged;
         int LevelOfInterest { get; set; }
+
         int LastKnownLatency { get; }
         uint LastKnownServerFrameNumber { get; }
         int TargetFrameLagAmount { get; }

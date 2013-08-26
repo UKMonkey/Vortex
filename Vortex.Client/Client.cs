@@ -46,7 +46,21 @@ namespace Vortex.Client
 
         public uint LastKnownServerFrameNumber { get; private set; }
         public int TargetFrameLagAmount { get { return 10; } }
-        public int LevelOfInterest { get; set; }
+
+        private int _levelOfInterest;
+        public event LevelOfInterestChangedHandler OnLevelOfInterestChanged;
+        public int LevelOfInterest
+        {
+            get { return _levelOfInterest; }
+            set
+            {
+                if (_levelOfInterest == value)
+                    return;
+                _levelOfInterest = value;
+                if (OnLevelOfInterestChanged != null)
+                    OnLevelOfInterestChanged();
+            }
+        }
 
         public IAudioEngine AudioEngine { get; private set; }
         public XmlLoader GuiLoader { get; private set; }

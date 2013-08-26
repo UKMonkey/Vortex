@@ -139,9 +139,17 @@ namespace Vortex.Renderer.WorldRenderers.ShadowedRenderer
                 () => _renderOpSoloLight,
                 delegate(float f) { _renderOpSoloLight = (int)f; });
 
+            engine.OnLevelOfInterestChanged += LevelOfInterestChanged;
+
             //Window.DevicePostReset += WindowOnDevicePostReset;
             //Window.DevicePreReset += WindowOnDevicePreReset;
         }
+
+        private void LevelOfInterestChanged()
+        {
+            _shouldGenerateGeometry = true;
+        }
+
         /*
         private void WindowOnDevicePreReset()
         {
